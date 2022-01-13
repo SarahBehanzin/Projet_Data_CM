@@ -31,6 +31,16 @@ def traduction_pays(nom_pays):
         pays_final="germany"
     if nom_pays=="angleterre":
         pays_final="england"
+    if nom_pays=="pays-bas":
+        pays_final="nederlands"
+    if nom_pays=="brésil" or nom_pays=="bresil":
+        pays_final=="brasil"
+    if nom_pays=="espagne":
+        pays_final="spain"
+    if nom_pays=="république de corée" or "corée":
+        pays_final="corea"
+    if nom_pays=="danemark":
+        pays_final="denemark"
     
     return pays_final
 
