@@ -1,11 +1,13 @@
+from cgitb import text
 import string
+from googletrans import Translator
+
+translator=Translator()
 
 #FONCTIONS
 
 def fontion_correspondance(mot_entre):
     mot_entre=mot_entre.lower()
-    if mot_entre=="finale" or mot_entre=="final":
-        mot="final"
     if mot_entre=="match pour la troisième place" or  mot_entre=="play-off for third place" or  mot_entre=="match for 3rd place" or mot_entre=="MATCH FOR 3RD PLACE":
         mot="MATCH FOR 3RD PLACE"
     if mot_entre=="demi-finales" or mot_entre== "semi-final" or mot_entre=="SEMIFINALS":
@@ -25,26 +27,14 @@ def fonction_pays(nom_pays):
     nom_final=nom_pays[0:3]
     return nom_final
 
-def traduction_pays(nom_pays):
-    nom_pays=nom_pays.lower()
-    if nom_pays=="allemagne":
-        pays_final="germany"
-    if nom_pays=="angleterre":
-        pays_final="england"
-    if nom_pays=="pays-bas":
-        pays_final="nederlands"
-    if nom_pays=="brésil" or nom_pays=="bresil":
-        pays_final=="brasil"
-    if nom_pays=="espagne":
-        pays_final="spain"
-    if nom_pays=="république de corée" or "corée":
-        pays_final="corea"
-    if nom_pays=="danemark":
-        pays_final="denemark"
-    
-    return pays_final
+def traduction(nom):
+    nom_final=translator.translate(nom, dest='en').text
+    nom_final=nom_final.lower()
+    return nom_final
 
 def main():
+    test=traduction("Angleterre")
+    print(test)
     return None
 
 if __name__ == '__main__':
