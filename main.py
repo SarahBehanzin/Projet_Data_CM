@@ -35,8 +35,8 @@ def fonction_pays(nom_pays):
     return nom_final
 
 def traduction(nom):
+#    nom.lower()
     nom_final=translator.translate(nom, dest='en').text
-    nom_final=nom_final.lower()
     return nom_final
 
 
@@ -75,7 +75,7 @@ def main():
             #rank_win =  soup.find('div',{'class':'fp-tournament-standing_rankDescription__1sEZl'}).find('h6')
 
             name = soup.find('div',{'class':'fp-tournament-standing_teamName__eYSTw'}).find('h3').text #nom du vainqueur
-            # deux=soup.find('div',{'class':'fp-tournament-standing_teamName__eYSTw'}).find('h3').text #nom du deuxième
+            #deux=soup.find('div',{'class':'row fp-match-overview_matchRow__13rpC justify-content-between d-flex'}).find('h4') #nom du deuxième
             # trois=soup.find('div',{'class':'fp-tournament-standing_teamName__eYSTw'}).find('h3').text #nom du troisième
             # quatre=soup.find('div',{'class':'fp-tournament-standing_teamName__eYSTw'}).find('h3').text #nom du quatrième
 
@@ -90,11 +90,10 @@ def main():
     #METTRE LES DONNÉES SOUS FORME DE DATAFRAME
     df_CM=pd.read_csv('pays.csv')#on lit les données stockées dans le fichier csv
 
-
     #TRAITEMENT DES DONNÉES
     df_CM["Code_vainqueur"]=df_CM["Vainqueur"]
     for i in range(len(df_CM)):
-        df_CM["Code_vainqueur"][i]=fonction_pays(df_CM["Vainqueur"][i])
+        df_CM["Code_vainqueur"][i]=fonction_pays(df_CM["Code_vainqueur"][i])
     print(df_CM)
     return None
 
