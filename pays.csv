@@ -1,22 +1,22 @@
-Année,Dates de début et de fin,Rang,equipe
-2018,14 juin  - 15 juillet ,Vainqueur , France
-2014,12 juin  - 13 juillet ,Vainqueur , Allemagne
-2010,11 juin  - 11 juillet ,Vainqueur , Espagne
-2006,09 juin  - 09 juillet ,Vainqueur , Italie
-2002,31 mai  - 30 juin ,Vainqueur , Brésil
-1998,10 juin  - 12 juillet ,Vainqueur , France
-1994,17 juin  - 17 juillet ,Vainqueur , Brésil
-1900,08 juin  - 08 juillet ,Vainqueur , République Fédérale d'Allemagne
-1986,31 mai  - 29 juin ,Vainqueur , Argentine
-1982,13 juin  - 11 juillet ,Vainqueur , Italie
-1978,01 juin  - 25 juin ,Vainqueur , Argentine
-1974,13 juin  - 07 juillet ,Vainqueur , République Fédérale d'Allemagne
-1970,31 mai  - 21 juin ,Vainqueur , Brésil
-1966,11 juillet  - 30 juillet ,Vainqueur , Angleterre
-1962,30 mai  - 17 juin ,Vainqueur , Brésil
-1958,08 juin  - 29 juin ,Vainqueur , Brésil
-1954,16 juin  - 04 juillet ,Vainqueur , République Fédérale d'Allemagne
-1950,24 juin  - 16 juillet ,Vainqueur , Uruguay
-1938,04 juin  - 19 juin ,Vainqueur , Italie
-1934,27 mai  - 10 juin ,Vainqueur , Italie
-1930,13 juillet  - 30 juillet ,Vainqueur , Uruguay
+Année,Dates de début,Dates de fin,Vainqueur
+2018,14 juin  , 15 juillet ,france
+2014,12 juin  , 13 juillet ,allemagne
+2010,11 juin  , 11 juillet ,espagne
+2006,09 juin  , 09 juillet ,italie
+2002,31 mai  , 30 juin ,brésil
+1998,10 juin  , 12 juillet ,france
+1994,17 juin  , 17 juillet ,brésil
+1900,08 juin  , 08 juillet ,allemagne
+1986,31 mai  , 29 juin ,argentine
+1982,13 juin  , 11 juillet ,italie
+1978,01 juin  , 25 juin ,argentine
+1974,13 juin  , 07 juillet ,allemagne
+1970,31 mai  , 21 juin ,brésil
+1966,11 juillet  , 30 juillet ,angleterre
+1962,30 mai  , 17 juin ,brésil
+1958,08 juin  , 29 juin ,brésil
+1954,16 juin  , 04 juillet ,allemagne
+1950,24 juin  , 16 juillet ,uruguay
+1938,04 juin  , 19 juin ,italie
+1934,27 mai  , 10 juin ,italie
+1930,13 juillet  , 30 juillet ,uruguay
