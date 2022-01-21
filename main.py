@@ -42,7 +42,8 @@ def traduction(nom):
 
 
 def main():
-    #SCRAPPING DES DONNÉES
+
+    #SCRAPPING DES DONNÉES CDM MASCULIN
     main_url = "https://www.fifa.com/fr/tournaments/mens/worldcup"
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"}
     response = requests.get(main_url, headers=headers)
@@ -63,7 +64,10 @@ def main():
                     annee.append(phrase[i])
 
             #l'année est composée des différents chiffres de la liste "annee" qui a été conçue au dessus
-            year=''+annee[0]+annee[1]+annee[2]+annee[3]
+                year=''
+            for i in range(len(annee)):
+                year+=annee[i]
+
 
             #pour les dates, on split les dates de début et de fin grâce au "-" et on affecte les deux valeurs dans les bonnes colonnes
             dates = soup.find('div',{'class':'col'}).find('h6').text
@@ -86,15 +90,68 @@ def main():
             name=traduction(name)
 
             outf.write(year+','+date_debut+','+date_fin+','+name+'\n')
+
+
+    #SCRAPPING DES DONNÉES CDM FEMININ
+    main_url_f = "https://www.fifa.com/fr/tournaments/womens/womensworldcup"
+    headers_f = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"}
+    response_f = requests.get(main_url_f, headers=headers_f)
+    soup_f = BeautifulSoup(response_f.text, 'html.parser')
+    all_href_f = [elt['href'] for elt in soup_f.findAll('a') if elt.get('href')  ]
+    all_tournaments_f = ['https://www.fifa.com'+elt for elt in all_href_f if '/fr/tournaments/womens/womensworldcup/australia-new-zealand2023'!= elt if '/fr/tournaments/womens/womensworldcup/' in elt]
+
+    with open('pays_f.csv','w') as outf:
+        outf.write('Année,Dates de début,Dates de fin,Vainqueur\n')
+        for row in all_tournaments_f: #pour chaque lien de la liste  
+            url = row
+            response = requests.get(url, headers=headers_f)
+            soup = BeautifulSoup(response.text, 'html.parser')
+            phrase = soup.find('div',{'class':'col'}).find('h1').text
+            annee=[]
+            for i in range(len(phrase)):
+                if phrase[i] in string.digits:
+                    annee.append(phrase[i])
+
+            #l'année est composée des différents chiffres de la liste "annee" qui a été conçue au dessus
+            year=''
+            for i in range(len(annee)):
+                year+=annee[i]
+
+            #pour les dates, on split les dates de début et de fin grâce au "-" et on affecte les deux valeurs dans les bonnes colonnes
+            dates = soup.find('div',{'class':'col'}).find('h6').text
+            dates_liste=dates.split("-")
+            date_debut=dates_liste[0]
+            date_fin=dates_liste[1]
+
+            name = soup.find('div',{'class':'fp-tournament-standing_teamName__eYSTw'}).find('h3').text#nom du vainqueur
+
+            #on s'assure que les noms des pays soient les bons et dans la bonne langue
+            # if name=="République Fédérale d'Allemagne":
+            #     name="Allemagne"
+            name=traduction(name)
+
+            outf.write(year+','+date_debut+','+date_fin+','+name+'\n')
+
+
+#------------------------------------------------------------------------------------------------------------------------------------------------#
+
             
     #METTRE LES DONNÉES SOUS FORME DE DATAFRAME
-    df_CM=pd.read_csv('pays.csv')#on lit les données stockées dans le fichier csv
+    df_CM_masculin=pd.read_csv('pays.csv')#on lit les données stockées dans le bon fichier csv
+    df_CM_feminin=pd.read_csv('pays_f.csv')#on lit les données stockées dans le bon fichier csv
 
     #TRAITEMENT DES DONNÉES
-    df_CM["Code_vainqueur"]=df_CM["Vainqueur"]
-    for i in range(len(df_CM)):
-        df_CM["Code_vainqueur"][i]=fonction_pays(df_CM["Code_vainqueur"][i])
-    print(df_CM)
+    #CM mascumlin
+    df_CM_masculin["Code_vainqueur"]=df_CM_masculin["Vainqueur"]
+    for i in range(len(df_CM_masculin)):
+        df_CM_masculin["Code_vainqueur"][i]=fonction_pays(df_CM_masculin["Code_vainqueur"][i])
+
+    #CM feminin
+    df_CM_feminin["Code_vainqueur"]=df_CM_feminin["Vainqueur"]
+    for i in range(len(df_CM_feminin)):
+        df_CM_feminin["Code_vainqueur"][i]=fonction_pays(df_CM_feminin["Code_vainqueur"][i])
+
+    print(df_CM_feminin)
     return None
 
 
