@@ -151,6 +151,12 @@ def main():
     for i in range(len(df_CM_feminin)):
         df_CM_feminin["Code_vainqueur"][i]=fonction_pays(df_CM_feminin["Code_vainqueur"][i])
 
+    for i in range(len(df_CM_feminin["Année"])): #on modifie le format des années qui ne sont pas écrites en entier
+        if df_CM_feminin["Année"][i]<50: #si le nombre est inférieur à 50, on lui ajoute 2000
+            df_CM_feminin["Année"][i]=2000+df_CM_feminin["Année"][i]
+        if df_CM_feminin["Année"][i]>50 and df_CM_feminin['Année'][i]<100: #si le nombre est supérieur à 50 et inférieur à 100, on ajoute 1900
+            df_CM_feminin['Année'][i]=1900+df_CM_feminin['Année'][i]
+
     print(df_CM_feminin)
     return None
 
