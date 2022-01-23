@@ -1,85 +1,85 @@
-Vainqueur , equipe
-Vainqueur : France
-Deuxième : Croatie
-Troisième : Belgique
-Quatrième : Angleterre
-Vainqueur : Allemagne
-Deuxième : Argentine
-Troisième : Pays-Bas
-Quatrième : Brésil
-Vainqueur : Espagne
-Deuxième : Pays-Bas
-Troisième : Allemagne
-Quatrième : Uruguay
-Vainqueur : Italie
-Deuxième : France
-Troisième : Allemagne
-Quatrième : Portugal
-Vainqueur : Brésil
-Deuxième : Allemagne
-Troisième : Turquie
-Quatrième : République de Corée
-Vainqueur : France
-Deuxième : Brésil
-Troisième : Croatie
-Quatrième : Pays-Bas
-Vainqueur : Brésil
-Deuxième : Italie
-Troisième : Suède
-Quatrième : Bulgarie
-Vainqueur : République Fédérale d'Allemagne
-Deuxième : Argentine
-Troisième : Italie
-Quatrième : Angleterre
-Vainqueur : Argentine
-Deuxième : République Fédérale d'Allemagne
-Troisième : France
-Quatrième : Belgique
-Vainqueur : Italie
-Deuxième : République Fédérale d'Allemagne
-Troisième : Pologne
-Quatrième : France
-Vainqueur : Argentine
-Deuxième : Pays-Bas
-Troisième : Brésil
-Quatrième : Italie
-Vainqueur : République Fédérale d'Allemagne
-Deuxième : Pays-Bas
-Troisième : Pologne
-Quatrième : Brésil
-Vainqueur : Brésil
-Deuxième : Italie
-Troisième : République Fédérale d'Allemagne
-Quatrième : Uruguay
-Vainqueur : Angleterre
-Deuxième : République Fédérale d'Allemagne
-Troisième : Portugal
-Quatrième : Union soviétique
-Vainqueur : Brésil
-Deuxième : Tchécoslovaquie
-Troisième : Chili
-Quatrième : Yougoslavie
-Vainqueur : Brésil
-Deuxième : Suède
-Troisième : France
-Quatrième : République Fédérale d'Allemagne
-Vainqueur : République Fédérale d'Allemagne
-Deuxième : Hongrie
-Troisième : Autriche
-Quatrième : Uruguay
-Vainqueur : Uruguay
-Deuxième : Brésil
-Troisième : Suède
-Quatrième : Espagne
-Vainqueur : Italie
-Deuxième : Hongrie
-Troisième : Brésil
-Quatrième : Suède
-Vainqueur : Italie
-Deuxième : Tchécoslovaquie
-Troisième : Allemagne
-Quatrième : Autriche
-Vainqueur : Uruguay
-Deuxième : Argentine
-Troisième : USA
-Quatrième : Yougoslavie
+AnnÃ©e,Dates de dÃ©but,Dates de fin,Rang,Equipe
+2018,14 juin  , 15 juillet ,Vainqueur,France
+2018,14 juin  , 15 juillet ,DeuxiÃ¨me,Croatie
+2018,14 juin  , 15 juillet ,TroisiÃ¨me,Belgique
+2018,14 juin  , 15 juillet ,QuatriÃ¨me,Angleterre
+2014,12 juin  , 13 juillet ,Vainqueur,Allemagne
+2014,12 juin  , 13 juillet ,DeuxiÃ¨me,Argentine
+2014,12 juin  , 13 juillet ,TroisiÃ¨me,Pays-Bas
+2014,12 juin  , 13 juillet ,QuatriÃ¨me,BrÃ©sil
+2010,11 juin  , 11 juillet ,Vainqueur,Espagne
+2010,11 juin  , 11 juillet ,DeuxiÃ¨me,Pays-Bas
+2010,11 juin  , 11 juillet ,TroisiÃ¨me,Allemagne
+2010,11 juin  , 11 juillet ,QuatriÃ¨me,Uruguay
+2006,09 juin  , 09 juillet ,Vainqueur,Italie
+2006,09 juin  , 09 juillet ,DeuxiÃ¨me,France
+2006,09 juin  , 09 juillet ,TroisiÃ¨me,Allemagne
+2006,09 juin  , 09 juillet ,QuatriÃ¨me,Portugal
+2002,31 mai  , 30 juin ,Vainqueur,BrÃ©sil
+2002,31 mai  , 30 juin ,DeuxiÃ¨me,Allemagne
+2002,31 mai  , 30 juin ,TroisiÃ¨me,Turquie
+2002,31 mai  , 30 juin ,QuatriÃ¨me,RÃ©publique de CorÃ©e
+1998,10 juin  , 12 juillet ,Vainqueur,France
+1998,10 juin  , 12 juillet ,DeuxiÃ¨me,BrÃ©sil
+1998,10 juin  , 12 juillet ,TroisiÃ¨me,Croatie
+1998,10 juin  , 12 juillet ,QuatriÃ¨me,Pays-Bas
+1994,17 juin  , 17 juillet ,Vainqueur,BrÃ©sil
+1994,17 juin  , 17 juillet ,DeuxiÃ¨me,Italie
+1994,17 juin  , 17 juillet ,TroisiÃ¨me,SuÃ¨de
+1994,17 juin  , 17 juillet ,QuatriÃ¨me,Bulgarie
+1900,08 juin  , 08 juillet ,Vainqueur,Allemagne
+1900,08 juin  , 08 juillet ,DeuxiÃ¨me,Argentine
+1900,08 juin  , 08 juillet ,TroisiÃ¨me,Italie
+1900,08 juin  , 08 juillet ,QuatriÃ¨me,Angleterre
+1986,31 mai  , 29 juin ,Vainqueur,Argentine
+1986,31 mai  , 29 juin ,DeuxiÃ¨me,Allemagne
+1986,31 mai  , 29 juin ,TroisiÃ¨me,France
+1986,31 mai  , 29 juin ,QuatriÃ¨me,Belgique
+1982,13 juin  , 11 juillet ,Vainqueur,Italie
+1982,13 juin  , 11 juillet ,DeuxiÃ¨me,Allemagne
+1982,13 juin  , 11 juillet ,TroisiÃ¨me,Pologne
+1982,13 juin  , 11 juillet ,QuatriÃ¨me,France
+1978,01 juin  , 25 juin ,Vainqueur,Argentine
+1978,01 juin  , 25 juin ,DeuxiÃ¨me,Pays-Bas
+1978,01 juin  , 25 juin ,TroisiÃ¨me,BrÃ©sil
+1978,01 juin  , 25 juin ,QuatriÃ¨me,Italie
+1974,13 juin  , 07 juillet ,Vainqueur,Allemagne
+1974,13 juin  , 07 juillet ,DeuxiÃ¨me,Pays-Bas
+1974,13 juin  , 07 juillet ,TroisiÃ¨me,Pologne
+1974,13 juin  , 07 juillet ,QuatriÃ¨me,BrÃ©sil
+1970,31 mai  , 21 juin ,Vainqueur,BrÃ©sil
+1970,31 mai  , 21 juin ,DeuxiÃ¨me,Italie
+1970,31 mai  , 21 juin ,TroisiÃ¨me,Allemagne
+1970,31 mai  , 21 juin ,QuatriÃ¨me,Uruguay
+1966,11 juillet  , 30 juillet ,Vainqueur,Angleterre
+1966,11 juillet  , 30 juillet ,DeuxiÃ¨me,Allemagne
+1966,11 juillet  , 30 juillet ,TroisiÃ¨me,Portugal
+1966,11 juillet  , 30 juillet ,QuatriÃ¨me,Union soviÃ©tique
+1962,30 mai  , 17 juin ,Vainqueur,BrÃ©sil
+1962,30 mai  , 17 juin ,DeuxiÃ¨me,TchÃ©coslovaquie
+1962,30 mai  , 17 juin ,TroisiÃ¨me,Chili
+1962,30 mai  , 17 juin ,QuatriÃ¨me,Yougoslavie
+1958,08 juin  , 29 juin ,Vainqueur,BrÃ©sil
+1958,08 juin  , 29 juin ,DeuxiÃ¨me,SuÃ¨de
+1958,08 juin  , 29 juin ,TroisiÃ¨me,France
+1958,08 juin  , 29 juin ,QuatriÃ¨me,Allemagne
+1954,16 juin  , 04 juillet ,Vainqueur,Allemagne
+1954,16 juin  , 04 juillet ,DeuxiÃ¨me,Hongrie
+1954,16 juin  , 04 juillet ,TroisiÃ¨me,Autriche
+1954,16 juin  , 04 juillet ,QuatriÃ¨me,Uruguay
+1950,24 juin  , 16 juillet ,Vainqueur,Uruguay
+1950,24 juin  , 16 juillet ,DeuxiÃ¨me,BrÃ©sil
+1950,24 juin  , 16 juillet ,TroisiÃ¨me,SuÃ¨de
+1950,24 juin  , 16 juillet ,QuatriÃ¨me,Espagne
+1938,04 juin  , 19 juin ,Vainqueur,Italie
+1938,04 juin  , 19 juin ,DeuxiÃ¨me,Hongrie
+1938,04 juin  , 19 juin ,TroisiÃ¨me,BrÃ©sil
+1938,04 juin  , 19 juin ,QuatriÃ¨me,SuÃ¨de
+1934,27 mai  , 10 juin ,Vainqueur,Italie
+1934,27 mai  , 10 juin ,DeuxiÃ¨me,TchÃ©coslovaquie
+1934,27 mai  , 10 juin ,TroisiÃ¨me,Allemagne
+1934,27 mai  , 10 juin ,QuatriÃ¨me,Autriche
+1930,13 juillet  , 30 juillet ,Vainqueur,Uruguay
+1930,13 juillet  , 30 juillet ,DeuxiÃ¨me,Argentine
+1930,13 juillet  , 30 juillet ,TroisiÃ¨me,USA
+1930,13 juillet  , 30 juillet ,QuatriÃ¨me,Yougoslavie

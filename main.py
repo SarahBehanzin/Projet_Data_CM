@@ -1,4 +1,5 @@
 from cgitb import text
+from os import name
 import string
 import pandas as pd
 import requests
@@ -52,7 +53,7 @@ def main():
     all_tournaments = ['https://www.fifa.com'+elt for elt in all_href if '/fr/tournaments/mens/worldcup/canadamexicousa2026'!= elt and '/fr/tournaments/mens/worldcup/qatar2022'!=elt if '/fr/tournaments/mens/worldcup/' in elt]
 
     with open('pays.csv','w') as outf:
-        outf.write('Année,Dates de début,Dates de fin,Vainqueur\n')
+        outf.write('Année,Dates de début,Dates de fin,Rang,Equipe\n')
         for row in all_tournaments: #pour chaque lien de la liste  
             url = row
             response = requests.get(url, headers=headers)
@@ -63,33 +64,37 @@ def main():
                 if phrase[i] in string.digits:
                     annee.append(phrase[i])
 
-            #l'année est composée des différents chiffres de la liste "annee" qui a été conçue au dessus
+           
+
+            div_rank =  soup.find_all('a',{'class':'fp-tournament-standing_standingRow__mPKma'})
+            for i in div_rank :
+                rank = i.find('div',{'class':'fp-tournament-standing_rankDescription__1sEZl'}).find('h6')
+                name_2 = i.find('div',{'class':'fp-tournament-standing_teamName__eYSTw'}).find('h3').text
+
+                #---------------
+
+                    #l'année est composée des différents chiffres de la liste "annee" qui a été conçue au dessus
                 year=''
-            for i in range(len(annee)):
-                year+=annee[i]
+                for i in range(len(annee)):
+                    year+=annee[i]
 
 
-            #pour les dates, on split les dates de début et de fin grâce au "-" et on affecte les deux valeurs dans les bonnes colonnes
-            dates = soup.find('div',{'class':'col'}).find('h6').text
-            dates_liste=dates.split("-")
-            date_debut=dates_liste[0]
-            date_fin=dates_liste[1]
+                #pour les dates, on split les dates de début et de fin grâce au "-" et on affecte les deux valeurs dans les bonnes colonnes
+                dates = soup.find('div',{'class':'col'}).find('h6').text
+                dates_liste=dates.split("-")
+                date_debut=dates_liste[0]
+                date_fin=dates_liste[1]
 
-            #gagnant
-            #rank_win =  soup.find('div',{'class':'fp-tournament-standing_rankDescription__1sEZl'}).find('h6')
+                 #on s'assure que les noms des pays soient les bons et dans la bonne langue
+                if name_2=="République Fédérale d'Allemagne":
+                    name_2="Allemagne"
+                #name=fonction_correspondance(name)
+                name_2=traduction(name_2)
 
-            name = soup.find('div',{'class':'fp-tournament-standing_teamName__eYSTw'}).find('h3').text #nom du vainqueur
-            #deux=soup.find('div',{'class':'row fp-match-overview_matchRow__13rpC justify-content-between d-flex'}).find('h4') #nom du deuxième
-            # trois=soup.find('div',{'class':'fp-tournament-standing_teamName__eYSTw'}).find('h3').text #nom du troisième
-            # quatre=soup.find('div',{'class':'fp-tournament-standing_teamName__eYSTw'}).find('h3').text #nom du quatrième
+                #-------------------
 
-            #on s'assure que les noms des pays soient les bons et dans la bonne langue
-            if name=="République Fédérale d'Allemagne":
-                name="Allemagne"
-            #name=fonction_correspondance(name)
-            name=traduction(name)
-
-            outf.write(year+','+date_debut+','+date_fin+','+name+'\n')
+                outf.write(year+','+date_debut+','+date_fin+','+rank.text+','+name_2+'\n')
+            # outf.write(year+','+date_debut+','+date_fin+','+name+'\n')
 
 
     #SCRAPPING DES DONNÉES CDM FEMININ
@@ -142,14 +147,14 @@ def main():
 
     #TRAITEMENT DES DONNÉES
     #CM mascumlin
-    df_CM_masculin["Code_vainqueur"]=df_CM_masculin["Vainqueur"]
+    df_CM_masculin["Code_pays"]=df_CM_masculin["Equipe"]
     for i in range(len(df_CM_masculin)):
-        df_CM_masculin["Code_vainqueur"][i]=fonction_pays(df_CM_masculin["Code_vainqueur"][i])
+        df_CM_masculin["Code_pays"][i]=fonction_pays(df_CM_masculin["Code_pays"][i])
 
-    #CM feminin
-    df_CM_feminin["Code_vainqueur"]=df_CM_feminin["Vainqueur"]
-    for i in range(len(df_CM_feminin)):
-        df_CM_feminin["Code_vainqueur"][i]=fonction_pays(df_CM_feminin["Code_vainqueur"][i])
+    # #CM feminin
+    # df_CM_feminin["Code_pays"]=df_CM_feminin["Equipe"]
+    # for i in range(len(df_CM_feminin)):
+    #     df_CM_feminin["Code_pays"][i]=fonction_pays(df_CM_feminin["Code_pays"][i])
 
     for i in range(len(df_CM_feminin["Année"])): #on modifie le format des années qui ne sont pas écrites en entier
         if df_CM_feminin["Année"][i]<50: #si le nombre est inférieur à 50, on lui ajoute 2000
@@ -157,7 +162,7 @@ def main():
         if df_CM_feminin["Année"][i]>50 and df_CM_feminin['Année'][i]<100: #si le nombre est supérieur à 50 et inférieur à 100, on ajoute 1900
             df_CM_feminin['Année'][i]=1900+df_CM_feminin['Année'][i]
 
-    print(df_CM_feminin)
+    print(df_CM_masculin)
     return None
 
 
