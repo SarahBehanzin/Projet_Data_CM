@@ -7,42 +7,34 @@ import string
 from googletrans import Translator
 from bs4 import BeautifulSoup
 
+translator=Translator() #fonction transmlator
 
-translator=Translator()
+#Initialisation des pays
+
+df_pays=pd.read_csv("sql-pays.csv", names=["id ", "alpha2", "alpha3", "nom_français", "nom_anglais"]) #on lit les données et on rajoute le header car il n'était pas dans le fichier
 
 #FONCTIONS
 
 def fonction_correspondance(mot_entre):
-    mot_entre=mot_entre.lower()
-    if mot_entre=="match pour la troisième place" or  mot_entre=="play-off for third place" or  mot_entre=="match for 3rd place" or mot_entre=="MATCH FOR 3RD PLACE":
-        mot="MATCH FOR 3RD PLACE"
-    elif mot_entre=="demi-finales" or mot_entre== "semi-final" or mot_entre=="SEMIFINALS":
-        mot="SEMIFINALS"
-    elif mot_entre=="quarts de finale" or mot_entre== "quarter-final" or mot_entre=="quarterfinals" or mot_entre=="quarter Finals" or mot_entre=="QUARTER FINAL":
-        mot="QUARTER FINAL"
-    elif mot_entre=="huitièmes de finale" or mot_entre=="round of 16" or mot_entre=="round of sixteen":
-        mot="round of sixteen"
-    elif mot_entre=="République Fédérale d'Allemagne":
-        mot="allemagne"
-    elif mot_entre=="russie" or mot_entre=="urs" or mot_entre=="union soviétique":
-        mot="russia"
-    elif mot_entre=="tchécoslovaquie":
-        mot="république tchèque"
-    elif mot_entre=="république de corée":
-        mot="corée"
-    else:
-        mot=mot_entre
+    mot=[]
+    for i in range(1,len(df_pays['nom_français'])):
+        if (df_pays["nom_français"][i] in mot_entre) or (df_pays['nom_anglais'][i] in mot_entre):
+            mot=df_pays['nom_français'][i]
     return mot
 
 def fonction_pays(nom_pays):
-    nom_pays=nom_pays.lower()
-    nom_final=nom_pays[0:3]
+    nom_final=[]
+    for i in range(1,len(df_pays)):
+        if df_pays['nom_français'][i]==nom_pays:
+            nom_final=df_pays['alpha3'][i]
     return nom_final
 
 def traduction(nom):
-    nom_final=translator.translate(nom, dest='en').text
+    nom_final=[]
+    for i in range(1,len(df_pays)):
+        if df_pays['nom_français'][i]==nom:
+            nom_final=str(df_pays['nom_anglais'][i])
     return nom_final
-
 
 def main():
 
@@ -87,12 +79,9 @@ def main():
                 date_debut=dates_liste[0]
                 date_fin=dates_liste[1]
 
-                 #on s'assure que les noms des pays soient les bons et dans la bonne langue
-                # if name_2=="République Fédérale d'Allemagne":
-                #     name_2="Allemagne"
-                name_2=fonction_correspondance(name_2)
-                name_2=traduction(name_2)
-
+                # name_2=fonction_correspondance(name_2)
+                # name_2=traduction(name_2)
+                # name_2=str(name_2)
                 #-------------------
 
                 outf.write(year+','+date_debut+','+date_fin+','+rank.text+','+name_2+'\n')
@@ -137,11 +126,8 @@ def main():
                 date_debut=dates_liste[0]
                 date_fin=dates_liste[1]
 
-                 #on s'assure que les noms des pays soient les bons et dans la bonne langue
-                # if name_2=="République Fédérale d'Allemagne":
-                #     name_2="Allemagne"
-                name_2=fonction_correspondance(name_2)
-                name_2=traduction(name_2)
+                # name_2=fonction_correspondance(name_2)
+                # name_2=traduction(name_2)
 
                 #-------------------
 
@@ -156,6 +142,18 @@ def main():
     df_CM_feminin=pd.read_csv('pays_f.csv')#on lit les données stockées dans le bon fichier csv
 
     #TRAITEMENT DES DONNÉES
+
+    #Mettre le nom des pays au bon format
+    for i in range(len(df_CM_masculin)):
+        df_CM_masculin['Equipe'][i]=fonction_correspondance(df_CM_masculin['Equipe'][i])
+        df_CM_masculin['Equipe'][i]=traduction(df_CM_masculin['Equipe'][i])
+        df_CM_masculin['Equipe'][i]=df_CM_masculin['Equipe'][i]
+
+    for i in range(len(df_CM_feminin)):
+        df_CM_feminin['Equipe'][i]=fonction_correspondance(df_CM_feminin['Equipe'][i])
+        df_CM_feminin['Equipe'][i]=traduction(df_CM_feminin['Equipe'][i])
+        df_CM_feminin['Equipe'][i]=df_CM_feminin['Equipe'][i]
+
     #CM mascumlin
     df_CM_masculin["Code_pays"]=df_CM_masculin["Equipe"]
     for i in range(len(df_CM_masculin)):
@@ -172,6 +170,7 @@ def main():
         if df_CM_feminin["Année"][i]>50 and df_CM_feminin['Année'][i]<100: #si le nombre est supérieur à 50 et inférieur à 100, on ajoute 1900
             df_CM_feminin['Année'][i]=1900+df_CM_feminin['Année'][i]
 
+    print(df_CM_masculin,'\n')
     print(df_CM_feminin)
     return None
 
