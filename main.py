@@ -12,23 +12,25 @@ translator=Translator()
 
 #FONCTIONS
 
-# def fonction_correspondance(mot_entre):
-#     mot_entre=mot_entre.lower()
-#     if mot_entre=="match pour la troisième place" or  mot_entre=="play-off for third place" or  mot_entre=="match for 3rd place" or mot_entre=="MATCH FOR 3RD PLACE":
-#         mot="MATCH FOR 3RD PLACE"
-#     if mot_entre=="demi-finales" or mot_entre== "semi-final" or mot_entre=="SEMIFINALS":
-#         mot="SEMIFINALS"
-#     if mot_entre=="quarts de finale" or mot_entre== "quarter-final" or mot_entre=="quarterfinals" or mot_entre=="quarter Finals" or mot_entre=="QUARTER FINAL":
-#         mot="QUARTER FINAL"
-#     if mot_entre=="huitièmes de finale" or mot_entre=="round of 16" or mot_entre=="round of sixteen":
-#         mot="round of sixteen"
-#     if mot_entre=="République Fédérale d'Allemagne":
-#         mot="allemagne"
-#     if mot_entre=="russie" or mot_entre=="urs":
-#         mot="russia"
-#     else:
-#         mot=mot_entre
-#     return mot
+def fonction_correspondance(mot_entre):
+    mot_entre=mot_entre.lower()
+    if mot_entre=="match pour la troisième place" or  mot_entre=="play-off for third place" or  mot_entre=="match for 3rd place" or mot_entre=="MATCH FOR 3RD PLACE":
+        mot="MATCH FOR 3RD PLACE"
+    elif mot_entre=="demi-finales" or mot_entre== "semi-final" or mot_entre=="SEMIFINALS":
+        mot="SEMIFINALS"
+    elif mot_entre=="quarts de finale" or mot_entre== "quarter-final" or mot_entre=="quarterfinals" or mot_entre=="quarter Finals" or mot_entre=="QUARTER FINAL":
+        mot="QUARTER FINAL"
+    elif mot_entre=="huitièmes de finale" or mot_entre=="round of 16" or mot_entre=="round of sixteen":
+        mot="round of sixteen"
+    elif mot_entre=="République Fédérale d'Allemagne":
+        mot="allemagne"
+    elif mot_entre=="russie" or mot_entre=="urs" or mot_entre=="union soviétique":
+        mot="russia"
+    elif mot_entre=="tchécoslovaquie":
+        mot="république tchèque"
+    else:
+        mot=mot_entre
+    return mot
 
 def fonction_pays(nom_pays):
     nom_pays=nom_pays.lower()
@@ -36,10 +38,8 @@ def fonction_pays(nom_pays):
     return nom_final
 
 def traduction(nom):
-#    nom.lower()
     nom_final=translator.translate(nom, dest='en').text
     return nom_final
-
 
 
 def main():
@@ -86,9 +86,9 @@ def main():
                 date_fin=dates_liste[1]
 
                  #on s'assure que les noms des pays soient les bons et dans la bonne langue
-                if name_2=="République Fédérale d'Allemagne":
-                    name_2="Allemagne"
-                #name=fonction_correspondance(name)
+                # if name_2=="République Fédérale d'Allemagne":
+                #     name_2="Allemagne"
+                name_2=fonction_correspondance(name_2)
                 name_2=traduction(name_2)
 
                 #-------------------
