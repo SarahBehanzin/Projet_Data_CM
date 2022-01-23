@@ -47,7 +47,7 @@ def main():
     all_tournaments = ['https://www.fifa.com'+elt for elt in all_href if '/fr/tournaments/mens/worldcup/canadamexicousa2026'!= elt and '/fr/tournaments/mens/worldcup/qatar2022'!=elt if '/fr/tournaments/mens/worldcup/' in elt]
 
     with open('pays.csv','w') as outf:
-        outf.write('Année,Dates de début,Dates de fin,Rang,Equipe\n')
+        outf.write('Année,Dates de début,Dates de fin,Rang,nom_français\n')
         for row in all_tournaments: #pour chaque lien de la liste  
             url = row
             response = requests.get(url, headers=headers)
@@ -78,10 +78,6 @@ def main():
                 dates_liste=dates.split("-")
                 date_debut=dates_liste[0]
                 date_fin=dates_liste[1]
-
-                # name_2=fonction_correspondance(name_2)
-                # name_2=traduction(name_2)
-                # name_2=str(name_2)
                 #-------------------
 
                 outf.write(year+','+date_debut+','+date_fin+','+rank.text+','+name_2+'\n')
@@ -96,7 +92,7 @@ def main():
     all_tournaments_f = ['https://www.fifa.com'+elt for elt in all_href_f if '/fr/tournaments/womens/womensworldcup/australia-new-zealand2023'!= elt if '/fr/tournaments/womens/womensworldcup/' in elt]
 
     with open('pays_f.csv','w') as outf:
-        outf.write('Année,Dates de début,Dates de fin,Rang,Equipe\n')
+        outf.write('Année,Dates de début,Dates de fin,Rang,nom_français\n')
         for row in all_tournaments_f: #pour chaque lien de la liste  
             url = row
             response = requests.get(url, headers=headers_f)
@@ -125,10 +121,6 @@ def main():
                 dates_liste=dates.split("-")
                 date_debut=dates_liste[0]
                 date_fin=dates_liste[1]
-
-                # name_2=fonction_correspondance(name_2)
-                # name_2=traduction(name_2)
-
                 #-------------------
 
                 outf.write(year+','+date_debut+','+date_fin+','+rank.text+','+name_2+'\n')
@@ -136,7 +128,6 @@ def main():
 
 #------------------------------------------------------------------------------------------------------------------------------------------------#
 
-            
     #METTRE LES DONNÉES SOUS FORME DE DATAFRAME
     df_CM_masculin=pd.read_csv('pays.csv')#on lit les données stockées dans le bon fichier csv
     df_CM_feminin=pd.read_csv('pays_f.csv')#on lit les données stockées dans le bon fichier csv
@@ -144,25 +135,11 @@ def main():
     #TRAITEMENT DES DONNÉES
 
     #Mettre le nom des pays au bon format
-    for i in range(len(df_CM_masculin)):
-        df_CM_masculin['Equipe'][i]=fonction_correspondance(df_CM_masculin['Equipe'][i])
-        df_CM_masculin['Equipe'][i]=traduction(df_CM_masculin['Equipe'][i])
-        df_CM_masculin['Equipe'][i]=df_CM_masculin['Equipe'][i]
+    #On merge les deux dataframes respectivement avec celle des pays, puis on supprimme toutes les lignes pour lesquelles nous n'avons pas de date
 
-    for i in range(len(df_CM_feminin)):
-        df_CM_feminin['Equipe'][i]=fonction_correspondance(df_CM_feminin['Equipe'][i])
-        df_CM_feminin['Equipe'][i]=traduction(df_CM_feminin['Equipe'][i])
-        df_CM_feminin['Equipe'][i]=df_CM_feminin['Equipe'][i]
+    df_CM_masculin=pd.merge(df_CM_masculin,df_pays,on='nom_français',how='outer').dropna(subset=['Année'])
 
-    #CM mascumlin
-    df_CM_masculin["Code_pays"]=df_CM_masculin["Equipe"]
-    for i in range(len(df_CM_masculin)):
-        df_CM_masculin["Code_pays"][i]=fonction_pays(df_CM_masculin["Code_pays"][i])
-
-    #CM feminin
-    df_CM_feminin["Code_pays"]=df_CM_feminin["Equipe"]
-    for i in range(len(df_CM_feminin)):
-        df_CM_feminin["Code_pays"][i]=fonction_pays(df_CM_feminin["Code_pays"][i])
+    df_CM_feminin=pd.merge(df_CM_feminin,df_pays,on='nom_français',how='outer').dropna(subset=['Année'])
 
     for i in range(len(df_CM_feminin["Année"])): #on modifie le format des années qui ne sont pas écrites en entier
         if df_CM_feminin["Année"][i]<50: #si le nombre est inférieur à 50, on lui ajoute 2000

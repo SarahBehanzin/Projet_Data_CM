@@ -8,10 +8,8 @@ from googletrans import Translator
 from bs4 import BeautifulSoup
 
 
-df_pays=pd.read_csv("sql-pays.csv", names=["id ", "alpha2", "alpha3", "nom_français", "nom_anglais"])
-
-for i in range(1,len(df_pays)):
-    print(df_pays['nom_français'][i])
+df_pays=pd.read_csv("pays_f.csv")
+print(len(df_pays))
     
 # main_url = "https://www.fifa.com/fr/tournaments/mens/worldcup"
 # headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"}
