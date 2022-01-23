@@ -1,9 +1,33 @@
-Année,Dates de début,Dates de fin,Vainqueur
-2019,07 juin  , 07 juillet ,USA
-2015,06 juin  , 05 juillet ,USA
-2011,26 juin  , 17 juillet ,Japon
-2007,10 septembre  , 30 septembre ,Allemagne
-03,20 septembre  , 12 octobre ,Allemagne
-99,19 juin  , 10 juillet ,USA
-1995,05 juin  , 18 juin ,Norvège
-1991,16 novembre  , 30 novembre ,USA
+Année,Dates de début,Dates de fin,Rang,Equipe
+2019,07 juin  , 07 juillet ,Vainqueur,usa
+2019,07 juin  , 07 juillet ,Deuxième,netherlands
+2019,07 juin  , 07 juillet ,Troisième,sweden
+2019,07 juin  , 07 juillet ,Quatrième,england
+2015,06 juin  , 05 juillet ,Vainqueur,usa
+2015,06 juin  , 05 juillet ,Deuxième,japon
+2015,06 juin  , 05 juillet ,Troisième,angleterre
+2015,06 juin  , 05 juillet ,Quatrième,allemagne
+2011,26 juin  , 17 juillet ,Vainqueur,japon
+2011,26 juin  , 17 juillet ,Deuxième,usa
+2011,26 juin  , 17 juillet ,Troisième,suède
+2011,26 juin  , 17 juillet ,Quatrième,france
+2007,10 septembre  , 30 septembre ,Vainqueur,allemagne
+2007,10 septembre  , 30 septembre ,Deuxième,brésil
+2007,10 septembre  , 30 septembre ,Troisième,usa
+2007,10 septembre  , 30 septembre ,Quatrième,norvège
+03,20 septembre  , 12 octobre ,Vainqueur,allemagne
+03,20 septembre  , 12 octobre ,Deuxième,suède
+03,20 septembre  , 12 octobre ,Troisième,usa
+03,20 septembre  , 12 octobre ,Quatrième,canada
+99,19 juin  , 10 juillet ,Vainqueur,usa
+99,19 juin  , 10 juillet ,Deuxième,rp chine
+99,19 juin  , 10 juillet ,Troisième,brésil
+99,19 juin  , 10 juillet ,Quatrième,norvège
+1995,05 juin  , 18 juin ,Vainqueur,norvège
+1995,05 juin  , 18 juin ,Deuxième,allemagne
+1995,05 juin  , 18 juin ,Troisième,usa
+1995,05 juin  , 18 juin ,Quatrième,rp chine
+1991,16 novembre  , 30 novembre ,Vainqueur,usa
+1991,16 novembre  , 30 novembre ,Deuxième,norvège
+1991,16 novembre  , 30 novembre ,Troisième,suède
+1991,16 novembre  , 30 novembre ,Quatrième,allemagne
