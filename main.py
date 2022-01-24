@@ -4,12 +4,13 @@ import string
 import pandas as pd
 import requests
 import string
+import pymongo
 from googletrans import Translator
 from bs4 import BeautifulSoup
 
 translator=Translator() #fonction transmlator
 
-#Initialisation des pays
+#Base de données contenant la liste des pays conforme à la norme ISO 3166-1
 
 df_pays=pd.read_csv("sql-pays.csv", names=["id ", "alpha2", "alpha3", "nom_français", "nom_anglais"]) #on lit les données et on rajoute le header car il n'était pas dans le fichier
 
@@ -147,8 +148,15 @@ def main():
         if df_CM_feminin["Année"][i]>50 and df_CM_feminin['Année'][i]<100: #si le nombre est supérieur à 50 et inférieur à 100, on ajoute 1900
             df_CM_feminin['Année'][i]=1900+df_CM_feminin['Année'][i]
 
-    print(df_CM_masculin,'\n')
-    print(df_CM_feminin)
+#--------------------------------------------------------------------------------------
+    #Mongo
+    client = pymongo.MongoClient("localhost:27017")
+    database = client['CM']
+    collection_CMmasc = database['CM_masculin']
+    collection_CMfem=database['CM_feminin']
+
+    collection_CMmasc.insert_many(df_CM_masculin.to_dict(orient='records'))
+    collection_CMfem.insert_many(df_CM_feminin.to_dict(orient='records'))
     return None
 
 
