@@ -1,12 +1,14 @@
 from cgitb import text
 from os import name
 import string
+from numpy import NaN
 import pandas as pd
 import requests
 import string
 import pymongo
 from googletrans import Translator
 from bs4 import BeautifulSoup
+pd.options.mode.chained_assignment = None  # default='warn' //permet de supprimmer un avertissement
 
 translator=Translator() #fonction transmlator
 
@@ -28,6 +30,12 @@ def fonction_correspondance(document):
             document[i]="Chine"
         if document[i]=="Angleterre" or document[i]=="England":
             document[i]="Royaume-Uni"
+        if document[i]=="République Fédérale d'Allemagne":
+            document[i]="Allemagne"
+        if document[i]=="Union soviétique":
+            document[i]="Fédération de Russie"
+        if document[i]=="Tchécoslovaquie":
+            document[i]="République Tchèque"
     return None
 
 def fonction_pays(nom_pays):
@@ -148,6 +156,7 @@ def main():
 
     #TRAITEMENT DES DONNÉES
     traduction(df_CM_feminin['nom_français'])
+    traduction(df_CM_masculin['nom_français'])
     fonction_correspondance(df_CM_masculin['nom_français'])
     fonction_correspondance(df_CM_feminin['nom_français'])
 
@@ -164,7 +173,6 @@ def main():
         if df_CM_feminin["Année"][i]>50 and df_CM_feminin['Année'][i]<100: #si le nombre est supérieur à 50 et inférieur à 100, on ajoute 1900
             df_CM_feminin['Année'][i]=1900+df_CM_feminin['Année'][i]
 
-    print(df_CM_feminin)
 #--------------------------------------------------------------------------------------
     # #Mongo
     # client = pymongo.MongoClient("localhost:27017")
