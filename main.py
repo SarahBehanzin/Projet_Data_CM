@@ -8,6 +8,7 @@ import string
 import pymongo
 from googletrans import Translator
 from bs4 import BeautifulSoup
+from lxml import etree
 pd.options.mode.chained_assignment = None  # default='warn' //permet de supprimmer un avertissement
 
 translator=Translator() #fonction transmlator

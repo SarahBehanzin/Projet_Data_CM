@@ -6,10 +6,10 @@ import string
 from pays import Countries
 from googletrans import Translator
 from bs4 import BeautifulSoup
+from lxml import etree
 
-
-df_pays=pd.read_csv("pays_f.csv")
-print(len(df_pays))
+test=etree.parse("https://sql.sh/ressources/sql-pays/sql-pays.xml")
+print(test)
     
 # main_url = "https://www.fifa.com/fr/tournaments/mens/worldcup"
 # headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"}
