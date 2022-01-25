@@ -16,26 +16,39 @@ df_pays=pd.read_csv("sql-pays.csv", names=["id ", "alpha2", "alpha3", "nom_fran�
 
 #FONCTIONS
 
-def fonction_correspondance(mot_entre):
+def fonction_correspondance(document):
+    '''
+
+    '''
     mot=[]
-    for i in range(1,len(df_pays['nom_français'])):
-        if (df_pays["nom_français"][i] in mot_entre) or (df_pays['nom_anglais'][i] in mot_entre):
-            mot=df_pays['nom_français'][i]
-    return mot
+    for i in range(len(document)):
+        if document[i]=="USA":
+            document[i]="États-Unis"
+        if document[i]=="RP Chine":
+            document[i]="Chine"
+        if document[i]=="Angleterre" or document[i]=="England":
+            document[i]="Royaume-Uni"
+    return None
 
 def fonction_pays(nom_pays):
+    '''
+
+    '''
     nom_final=[]
     for i in range(1,len(df_pays)):
         if df_pays['nom_français'][i]==nom_pays:
             nom_final=df_pays['alpha3'][i]
     return nom_final
 
-def traduction(nom):
-    nom_final=[]
-    for i in range(1,len(df_pays)):
-        if df_pays['nom_français'][i]==nom:
-            nom_final=str(df_pays['nom_anglais'][i])
-    return nom_final
+def traduction(document):
+    '''
+    
+    '''
+    for mot in range(len(document)):
+        for i in range(1,len(df_pays)):
+            if df_pays['nom_anglais'][i]==document[mot]:
+                document[mot]=str(df_pays['nom_français'][i])
+    return None
 
 def main():
 
@@ -134,6 +147,9 @@ def main():
     df_CM_feminin=pd.read_csv('pays_f.csv')#on lit les données stockées dans le bon fichier csv
 
     #TRAITEMENT DES DONNÉES
+    traduction(df_CM_feminin['nom_français'])
+    fonction_correspondance(df_CM_masculin['nom_français'])
+    fonction_correspondance(df_CM_feminin['nom_français'])
 
     #Mettre le nom des pays au bon format
     #On merge les deux dataframes respectivement avec celle des pays, puis on supprimme toutes les lignes pour lesquelles nous n'avons pas de date
@@ -148,15 +164,16 @@ def main():
         if df_CM_feminin["Année"][i]>50 and df_CM_feminin['Année'][i]<100: #si le nombre est supérieur à 50 et inférieur à 100, on ajoute 1900
             df_CM_feminin['Année'][i]=1900+df_CM_feminin['Année'][i]
 
+    print(df_CM_feminin)
 #--------------------------------------------------------------------------------------
-    #Mongo
-    client = pymongo.MongoClient("localhost:27017")
-    database = client['CM']
-    collection_CMmasc = database['CM_masculin']
-    collection_CMfem=database['CM_feminin']
+    # #Mongo
+    # client = pymongo.MongoClient("localhost:27017")
+    # database = client['CM']
+    # collection_CMmasc = database['CM_masculin']
+    # collection_CMfem=database['CM_feminin']
 
-    collection_CMmasc.insert_many(df_CM_masculin.to_dict(orient='records'))
-    collection_CMfem.insert_many(df_CM_feminin.to_dict(orient='records'))
+    # collection_CMmasc.insert_many(df_CM_masculin.to_dict(orient='records'))
+    # collection_CMfem.insert_many(df_CM_feminin.to_dict(orient='records'))
     return None
 
 
