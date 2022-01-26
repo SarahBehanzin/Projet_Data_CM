@@ -1,4 +1,5 @@
 from cgitb import text
+from distutils.log import info
 import string
 import pandas as pd
 import requests
@@ -8,9 +9,10 @@ from googletrans import Translator
 from bs4 import BeautifulSoup
 from lxml import etree
 
-test=etree.parse("https://sql.sh/ressources/sql-pays/sql-pays.xml")
-print(test)
-    
+df_pays=pd.read_csv("sql-pays.csv", names=["id ", "alpha2", "alpha3", "nom_français", "nom_anglais"])
+
+for i in range(1,len(df_pays)):
+    print(type(df_pays['alpha3'][i]))
 # main_url = "https://www.fifa.com/fr/tournaments/mens/worldcup"
 # headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"}
 # response = requests.get(main_url, headers=headers)

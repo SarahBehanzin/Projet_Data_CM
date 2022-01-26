@@ -1,4 +1,6 @@
+from cgi import test
 from cgitb import text
+from cmath import nan
 from os import name
 import string
 from numpy import NaN
@@ -6,6 +8,7 @@ import pandas as pd
 import requests
 import string
 import pymongo
+import matplotlib.pyplot as plt
 from googletrans import Translator
 from bs4 import BeautifulSoup
 from lxml import etree
@@ -23,7 +26,6 @@ def fonction_correspondance(document):
     '''
 
     '''
-    mot=[]
     for i in range(len(document)):
         if document[i]=="USA":
             document[i]="États-Unis"
@@ -38,6 +40,7 @@ def fonction_correspondance(document):
         if document[i]=="Tchécoslovaquie":
             document[i]="République Tchèque"
     return None
+
 
 def fonction_pays(nom_pays):
     '''
@@ -58,6 +61,17 @@ def traduction(document):
             if df_pays['nom_anglais'][i]==document[mot]:
                 document[mot]=str(df_pays['nom_français'][i])
     return None
+
+def cursor_to_liste(cursor):
+    '''
+    '''
+    x=[]
+    y=[]
+    liste=list(cursor)
+    for i in range(len(liste)):
+        x.append(list(liste[i].values())[0])
+        y.append(list(liste[i].values())[1])
+    return x,y
 
 def main():
 
@@ -164,25 +178,45 @@ def main():
     #Mettre le nom des pays au bon format
     #On merge les deux dataframes respectivement avec celle des pays, puis on supprimme toutes les lignes pour lesquelles nous n'avons pas de date
 
-    df_CM_masculin=pd.merge(df_CM_masculin,df_pays,on='nom_français',how='outer').dropna(subset=['Année'])
+    df_CM_masculin=pd.merge(df_CM_masculin,df_pays,on='nom_français',how='outer').dropna(subset=['Année','alpha3'])
 
-    df_CM_feminin=pd.merge(df_CM_feminin,df_pays,on='nom_français',how='outer').dropna(subset=['Année'])
+    df_CM_feminin=pd.merge(df_CM_feminin,df_pays,on='nom_français',how='outer').dropna(subset=['Année', 'alpha3'])
+
 
     for i in range(len(df_CM_feminin["Année"])): #on modifie le format des années qui ne sont pas écrites en entier
         if df_CM_feminin["Année"][i]<50: #si le nombre est inférieur à 50, on lui ajoute 2000
             df_CM_feminin["Année"][i]=2000+df_CM_feminin["Année"][i]
         if df_CM_feminin["Année"][i]>50 and df_CM_feminin['Année'][i]<100: #si le nombre est supérieur à 50 et inférieur à 100, on ajoute 1900
             df_CM_feminin['Année'][i]=1900+df_CM_feminin['Année'][i]
-
 #--------------------------------------------------------------------------------------
-    # #Mongo
-    # client = pymongo.MongoClient("localhost:27017")
-    # database = client['CM']
-    # collection_CMmasc = database['CM_masculin']
-    # collection_CMfem=database['CM_feminin']
+    #Mongo
 
-    # collection_CMmasc.insert_many(df_CM_masculin.to_dict(orient='records'))
-    # collection_CMfem.insert_many(df_CM_feminin.to_dict(orient='records'))
+    client = pymongo.MongoClient("localhost:27017")
+    database = client['CM']
+    collection_CMmasc = database['CM_masculin']
+    collection_CMfem=database['CM_feminin']
+
+    collection_CMfem.drop()
+    collection_CMmasc.drop()
+
+    collection_CMmasc.insert_many(df_CM_masculin.to_dict(orient='records'))
+    collection_CMfem.insert_many(df_CM_feminin.to_dict(orient='records'))
+
+    Meilleur_masc_x,Meilleur_masc_y=cursor_to_liste(collection_CMmasc.aggregate([{"$group":{"_id":"$alpha3", "nombre_dans_4_premiers_fem":{"$sum":1}}}]))
+    Meilleur_fem_x,Meilleur_fem_y=cursor_to_liste(collection_CMfem.aggregate([{"$group":{"_id":"$alpha3", "nombre_dans_4_premiers_fem":{"$sum":1}}}])) 
+#-----------------------------------------------------------------------------------------
+    #Graphiques
+
+    #Graphiques montrant le nombre de fois pour lesquels chaque pays a été dans les 4 premiers du classement
+
+    graph_meilleur_fem=plt.bar(Meilleur_fem_x, Meilleur_fem_y,1.0,color='b') #CM féminin
+    plt.savefig('graph1.png')
+
+    plt.clf()
+
+    graph_meilleur_masc=plt.bar(Meilleur_masc_x, Meilleur_masc_y,1.0,color='r')#CM masculin
+    plt.savefig('graph2.png')
+
     return None
 
 
