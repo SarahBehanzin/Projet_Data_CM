@@ -248,7 +248,7 @@ def main():
     plt.savefig('graph1.png')#on enregistre dans le fichier graph1.png
 
     plt.clf()#on supprime ce qui était dans la figure pour éviter que les deux graphiques ne se superposent
-
+    f, graph_meilleur_masc = plt.subplots(figsize=(18,5))
     graph_meilleur_masc=plt.bar(Meilleur_masc_x, Meilleur_masc_y,1.0,color='r')#CM masculin
     plt.savefig('graph2.png')#on enregistre dans le fichier graph2.png
 
