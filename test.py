@@ -9,10 +9,45 @@ from googletrans import Translator
 from bs4 import BeautifulSoup
 from lxml import etree
 
-df_pays=pd.read_csv("sql-pays.csv", names=["id ", "alpha2", "alpha3", "nom_français", "nom_anglais"])
+#SCRAPPING DES NOMS DES STADES DES FINALES
 
-for i in range(1,len(df_pays)):
-    print(type(df_pays['alpha3'][i]))
+main_url_liste = "https://www.maxifoot.fr/palmares-coupe-du-monde.htm"
+headers_liste = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"}
+response_liste = requests.get(main_url_liste, headers=headers_liste)
+soup_liste = BeautifulSoup(response_liste.text, 'html.parser')
+all_liste=soup_liste.find_all(class_='l1')
+liste_stades=[]
+
+for i in range(len(all_liste)):
+    liste_stades.append(all_liste[i].text.split(',')[1])
+    for j in range(len(liste_stades)):
+        if liste_stades[j]=='':
+            del liste_stades[j]
+
+
+
+# main_url_geo = "https://fr.wikipedia.org/wiki/Finale_de_la_Coupe_du_monde_de_football"
+# headers_geo = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"}
+# response_geo = requests.get(main_url_geo, headers=headers_geo)
+# soup_geo = BeautifulSoup(response_geo.text, 'html.parser')
+# all_href_geo = [elt['href'] for elt in soup_geo.findAll('a') if elt.get('href')]
+# all_tournaments_geo = ['https://fr.m.wikipedia.org'+elt for elt in all_href_geo]
+    
+main_url_geo = "https://fr.wikipedia.org/wiki/Finale_de_la_Coupe_du_monde_de_football"
+headers_geo = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"}
+response_geo = requests.get(main_url_geo, headers=headers_geo)
+soup_geo = BeautifulSoup(response_geo.text, 'html.parser')
+all_title_geo = [elt['title'] for elt in soup_geo.findAll('a') if elt.get('title') if elt['title'] in liste_stades]
+all_href_geo = [elt['href'] for elt in soup_geo.findAll('a') if elt.get('href')]
+all_tournaments_geo = ['https://fr.m.wikipedia.org'+elt for elt in all_href_geo]
+
+print(all_href_geo)
+
+# print(all_tournaments_geo)
+# for i in range(len(all_href_geo)):
+#     print(all_href_geo[i].attrs)
+
+    
 # main_url = "https://www.fifa.com/fr/tournaments/mens/worldcup"
 # headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"}
 # response = requests.get(main_url, headers=headers)
