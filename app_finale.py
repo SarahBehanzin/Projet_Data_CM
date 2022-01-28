@@ -243,17 +243,17 @@ def main():
                 ])
             ]),
 
-            dcc.Tab(label="Partie deux", children=[   #deuxième onglet
+            dcc.Tab(label="Analyse par les graphiques", children=[   #deuxième onglet
                 html.Div(children=[
                     html.H1(children='Partie 2', style={'textAlign' :'center', 'background-color':'#dfe4ea'}),#titre de la page
                         dcc.Textarea(
                         id='histo',
                         title='Graphiques',
-                        value='Voici les graphiques barres représentant le nombre de fois où chaque pays a été dans les 4 premiers du classement.',
+                        value='Voici les graphiques barres représentant le nombre de fois où chaque pays a été dans les 4 premiers du classement.\nSi vous voulez voir à quels pays les codes correspondent, vous pouvez les rechercher dans la  première base de données présente dans le précédent onglet ',
                         style={'fontFamily':'Arial','width':'100%', 'height':'1000', 'textAlign':'left', 'background-color':'#dfe4ea', 'font-size':'medium', 'font-style':'normal', 'resize':'none','border':'none'},
                         readOnly='readOnly',
                         draggable='false',
-                        rows='1'
+                        rows='2'
                     ),
                         dcc.Graph(#affichage du quatrième graph
                             id='graph1',
@@ -264,6 +264,17 @@ def main():
                             id='graph2',
                             figure=fig_masc,
                             style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px'}
+                        ),
+                        dcc.Graph(
+                            figure={
+                                'data': [
+                                    {'x': Meilleur_fem_x, 'y': Meilleur_fem_y, 'type': 'bar', 'name': 'CM_Femme'},
+                                    {'x': Meilleur_masc_x, 'y': Meilleur_masc_y, 'type': 'bar', 'name': u'CM_Homme'},
+                                ],
+                                'layout': {
+                                    'title': 'Comparaison des des pays arrivés dans les 4 premiers pour la Coupe du Monde Féminine et Masculine'
+                                }
+                            }
                         )
                 ]),
             ]),
