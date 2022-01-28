@@ -183,6 +183,26 @@ def main():
             if liste_stades[j]=='':
                 del liste_stades[j]
 
+        #SCRAPPING DES COORDONNEES GEOGRAPHIQUE DES PAYS DU MONDE
+    main_url = "https://developers.google.com/public-data/docs/canonical/countries_csv"
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"}
+    response_coord = requests.get(main_url, headers=headers)
+    soup_coord = BeautifulSoup(response_coord.text, 'html.parser')
+    compteur = 0
+
+    with open('coord.csv','w') as outf:
+        outf.write('latitude , longitude, pays\n')
+        for i in soup_coord.find_all('td'):
+            compteur = compteur +1
+            if compteur%4==2:
+                outf.write(i.text+',')
+                #print(i.text)
+            if compteur%4==3:
+                outf.write(i.text+',')
+                #print(i.text)
+            if compteur%4==0:
+                outf.write(i.text+'\n')
+                #print(i.text+'\n')
     
 
     return None
