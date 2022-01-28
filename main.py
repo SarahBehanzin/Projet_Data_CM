@@ -26,6 +26,7 @@ translator=Translator() #fonction transmlator
 
 df_pays=pd.read_csv("sql-pays.csv", names=["id ", "alpha2", "alpha3", "nom_français", "nom_anglais"]) #on lit les données et on rajoute le header car il n'était pas dans le fichier
 
+
 #FONCTIONS
 
 def fonction_correspondance(document):
