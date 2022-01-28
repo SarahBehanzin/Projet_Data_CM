@@ -184,6 +184,7 @@ def main():
  
     app = dash.Dash(__name__)#création du dashboard
 
+    #CRÉATION DES GRAPHS QUI VONT SERVIR POUR L'APPLICATION
     fig = px.bar(x=Meilleur_fem_x, y=Meilleur_fem_y,title=("Graphique barres représentant le nombre de fois où chaque équipe a été dans les 4 premiers du classement (CM_féminine)"))
     fig_masc=px.bar(x=Meilleur_masc_x, y=Meilleur_masc_y,title="Graphique barres représentant le nombre de fois où chaque équipe a été dans les 4 premiers du classement (CM_masculine)")
 
@@ -197,13 +198,13 @@ def main():
                 html.Div(children=[
                     html.H1(children='Présentation du projet', style={'textAlign' :'center','background-color':'#dfe4ea'}),#titre de la page
                     dcc.Textarea(
-                        id='présentation',
-                        title='Présentation du dashboard',
+                        id='présentation',#id 
+                        title='Présentation du dashboard',#titre en haut de la page
                         value='Bienvenue!\n\nNous sommes Sarah Behanzin, Amine Belgacem et Shayan Arnal.\nOn étudie ici les statistiques des différentes coupes de monde de football de 1930 à 2018.\nLes bases de données scrappées comportent des informations en plus que celles dues au scrapping, notamment avec des merges sur différentes dataframes.',
                         style={'fontFamily':'Arial','width':'100%', 'height':'1000', 'textAlign':'left', 'background-color':'#dfe4ea', 'font-size':'medium', 'font-style':'normal', 'resize':'none', 'border':'none'},
-                        readOnly='readOnly',
+                        readOnly='readOnly',#en lecture seule
                         draggable='false',
-                        rows='5'
+                        rows='5'#5 lignes
                     ),
 
                     html.H1(children='Base de donnée importée : Liste des pays', style={'textAlign':'left'}),#première dataframe
@@ -284,21 +285,6 @@ def main():
                 html.Div(children=[
                     html.H1(children='Cartes', style={'textAlign' :'center', 'background-color':'#dfe4ea'}),#titre de la page
                     html.H1(children='Partie 3', style={'textAlign':'left'}),#titre de la première carte
-                    # html.Iframe(#affichage de la première map
-                    #     id='map1',
-                    #     srcDoc=open('map_teams.html','r').read(),
-                    #     width='60%',
-                    #     height='600',
-                    #     style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px', 'margin':'25'}
-                    # ),
-                    # html.H1(children='Demo', style={'textAlign':'left'}),#titre de la deuxième carte
-                    # html.Iframe(#affichage de la deuxième map
-                    #     id='map2',
-                    #     srcDoc=open('map_matchs.html','r').read(),
-                    #     width='60%',
-                    #     height='600',
-                    #     style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px','margin':'25'}
-                    # )
                 ])
             ])    
         ])

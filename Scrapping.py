@@ -125,6 +125,8 @@ def main():
             if liste_stades[j]=='':
                 del liste_stades[j]
 
+    
+
     return None
 
 if __name__ == '__main__':
