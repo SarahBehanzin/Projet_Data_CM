@@ -16,6 +16,16 @@ from dash import dcc
 from dash import html
 from dash import dash_table
 
+#IMPORTATION DES GRAPHES
+# import PIL
+
+# from PIL import Image
+    
+# graph1 = Image.open("graph1.png")
+
+import imageio
+
+graph1=imageio.imread("graph1.png")
 #IMPORTATION DES BASE DE DONNÉES SCRAPPEES
 
 df_pays=pd.read_csv("sql-pays.csv", names=["id ", "alpha2", "alpha3", "nom_français", "nom_anglais"]) #on lit les données et on rajoute le header car il n'était pas dans le fichier
@@ -47,7 +57,7 @@ app.layout = html.Div(children=[
                         style={'fontFamily':'Arial','width':'100%', 'height':'1000', 'textAlign':'left', 'background-color':'#dfe4ea', 'font-size':'medium', 'font-style':'normal', 'resize':'none', 'border':'none'},
                         readOnly='readOnly',
                         draggable='false',
-                        rows='20'
+                        rows='4'
                     ),
 
                     html.H1(children='Base de donnée importée : Liste des pays', style={'textAlign':'left'}),#première dataframe
@@ -67,7 +77,7 @@ app.layout = html.Div(children=[
                         fixed_rows={'headers': True},
                         style_table={'overflowY': 'auto'}
                     ),
-                    html.H1(children='Données 3', style={'textAlign':'left'}),#deuxième dataframe
+                    html.H1(children='Base de donnée scrappée : Coupe du monde féminine', style={'textAlign':'left'}),#deuxième dataframe
                     dash_table.DataTable(#affichage de la base de donnée 
                         data=df_pays_fem.to_dict('records'),
                         columns=[{'id': c, 'name': c} for c in df_pays_fem.columns],
@@ -108,11 +118,12 @@ app.layout = html.Div(children=[
                         #     figure=hist3,
                         #     style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px'}
                         # ),
-                        # dcc.Graph(#affichage du quatrième graph
-                        #     id='graph4',
-                        #     figure=hist4,
-                        #     style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px'}
-                        # )
+
+                        dcc.Graph(#affichage du quatrième graph
+                            id='graph1',
+                            figure=graph1,
+                            style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px'}
+                        )
                 ]),
             ]),
 
