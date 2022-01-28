@@ -1,7 +1,11 @@
+'''
+authors:
+    sarah.behanzin@edu.esiee.fr
+    mohammad-amine.belgacem@edu.esiee.fr
+    shayan.arnal@edu.esiee.fr
+'''
 
 #Importations utiles pour le traitement des données
-
-import urllib.parse
 import urllib.request
 import pandas as pd
 import numpy as np
@@ -10,30 +14,23 @@ import matplotlib.pyplot as plt
 #Importations utiles pour le dashboard
 import plotly_express as px
 import dash
-
+import base64
 
 from dash import dcc
 from dash import html
 from dash import dash_table
-
-#IMPORTATION DES GRAPHES
-# import PIL
-
-# from PIL import Image
-    
-# graph1 = Image.open("graph1.png")
-
 import imageio
 
-graph1=imageio.imread("graph1.png")
+# graph1=imageio.imread("graph1.png")
+# plt.show()
+image_filename = 'graph1.png' # replace with your own image
+# graph1 = base64.b64encode(open(image_filename, 'rb').read())
+graph1=image_filename
 #IMPORTATION DES BASE DE DONNÉES SCRAPPEES
 
 df_pays=pd.read_csv("sql-pays.csv", names=["id ", "alpha2", "alpha3", "nom_français", "nom_anglais"]) #on lit les données et on rajoute le header car il n'était pas dans le fichier
 df_pays_masculin=pd.read_csv('pays.csv')
 df_pays_fem=pd.read_csv('pays_f.csv')
-
-#PERMET D'ÉVITER DE RECEVOIR UN WARNING DÛ AU FAIT QUE NOUS MODIFIONS LES VALEURS DE LA DATAFRAME
-pd.options.mode.chained_assignment = None
 
 
 app = dash.Dash(__name__)#création du dashboard
@@ -94,14 +91,14 @@ app.layout = html.Div(children=[
                     html.H1(children='Partie 2', style={'textAlign' :'center', 'background-color':'#dfe4ea'}),#titre de la page
                         dcc.Textarea(
                         id='histo',
-                        title='Histogrammes',
-                        value='Cliquer pour selectionner les données.',
+                        title='Graphiques',
+                        value='Voici les graphiques barres représentant le nombre de fois où chaque pays a été dans les 4 premiers du classement.',
                         style={'fontFamily':'Arial','width':'100%', 'height':'1000', 'textAlign':'left', 'background-color':'#dfe4ea', 'font-size':'medium', 'font-style':'normal', 'resize':'none','border':'none'},
                         readOnly='readOnly',
                         draggable='false',
                         rows='1'
                     ),
-
+                        
                         # dcc.Graph(#affichage du premier graph
                         #     id='graph1',
                         #     figure=hist1,
@@ -119,11 +116,11 @@ app.layout = html.Div(children=[
                         #     style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px'}
                         # ),
 
-                        dcc.Graph(#affichage du quatrième graph
-                            id='graph1',
-                            figure=graph1,
-                            style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px'}
-                        )
+                        # dcc.Graph(#affichage du quatrième graph
+                        #     id='graph1',
+                        #     figure=graph_meilleur_fem,
+                        #     style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px'}
+                        # )
                 ]),
             ]),
 
