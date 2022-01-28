@@ -191,9 +191,12 @@ def main():
     compteur = 0
 
     with open('coord.csv','w') as outf:
-        outf.write('latitude , longitude, pays\n')
+        outf.write('pays, latitude , longitude, nom\n')
         for i in soup_coord.find_all('td'):
             compteur = compteur +1
+            if compteur%4==1:
+                outf.write(i.text+',')
+                #print(i.text)
             if compteur%4==2:
                 outf.write(i.text+',')
                 #print(i.text)
@@ -203,7 +206,6 @@ def main():
             if compteur%4==0:
                 outf.write(i.text+'\n')
                 #print(i.text+'\n')
-    
 
     return None
 
