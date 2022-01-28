@@ -184,7 +184,8 @@ def main():
  
     app = dash.Dash(__name__)#création du dashboard
 
-    fig = px.bar(x=Meilleur_fem_x, y=Meilleur_fem_y,title="test")
+    fig = px.bar(x=Meilleur_fem_x, y=Meilleur_fem_y,title=("Graphique barres représentant le nombre de fois où chaque équipe a été dans les 4 premiers du classement (CM_féminine)"))
+    fig_masc=px.bar(x=Meilleur_masc_x, y=Meilleur_masc_y,title="Graphique barres représentant le nombre de fois où chaque équipe a été dans les 4 premiers du classement (CM_masculine)")
 
     app.layout = html.Div(children=[  
 
@@ -198,41 +199,49 @@ def main():
                     dcc.Textarea(
                         id='présentation',
                         title='Présentation du dashboard',
-                        value='Bienvenue!\n\nNous sommes Sarah Behanzin, Amine Belgacem et Shayan Arnal.\nOn étudie ici les statistiques des différentes coupes de monde de football de 1930 à 2018.',
+                        value='Bienvenue!\n\nNous sommes Sarah Behanzin, Amine Belgacem et Shayan Arnal.\nOn étudie ici les statistiques des différentes coupes de monde de football de 1930 à 2018.\nLes bases de données scrappées comportent des informations en plus que celles dues au scrapping, notamment avec des merges sur différentes dataframes.',
                         style={'fontFamily':'Arial','width':'100%', 'height':'1000', 'textAlign':'left', 'background-color':'#dfe4ea', 'font-size':'medium', 'font-style':'normal', 'resize':'none', 'border':'none'},
                         readOnly='readOnly',
                         draggable='false',
-                        rows='4'
+                        rows='5'
                     ),
 
                     html.H1(children='Base de donnée importée : Liste des pays', style={'textAlign':'left'}),#première dataframe
                     dash_table.DataTable( #affichage de la base de donnée 
                         data=df_pays.to_dict('records'),
                         columns=[{'id': c, 'name': c} for c in df_pays.columns],
-                        page_action='none',
+                        page_action='native',
                         fixed_rows={'headers': True},
-                        style_table={'overflowY': 'auto'}
+                        style_table={'overflowY': 'auto'},
+                        page_current= 0,
+                        page_size= 10,
+                        filter_action="native"
                     ),
 
                     html.H1(children='Base de donnée scrappée : Coupe du monde masculine', style={'textAlign':'left'}),#deuxième dataframe
                     dash_table.DataTable(#affichage de la base de donnée 
-                        data=df_pays.to_dict('records'),
+                        data=df_CM_masculin.to_dict('records'),
                         columns=[{'id': c, 'name': c} for c in df_CM_masculin.columns],
-                        page_action='none',
+                        page_action='native',
                         fixed_rows={'headers': True},
-                        style_table={'overflowY': 'auto'}
+                        style_table={'overflowY': 'auto'},
+                        page_current= 0,
+                        page_size= 10,
+                        filter_action="native"
                     ),
                     html.H1(children='Base de donnée scrappée : Coupe du monde féminine', style={'textAlign':'left'}),#deuxième dataframe
                     dash_table.DataTable(#affichage de la base de donnée 
                         data=df_CM_feminin.to_dict('records'),
                         columns=[{'id': c, 'name': c} for c in df_CM_feminin.columns],
-                        page_action='none',
+                        page_action='native',
                         fixed_rows={'headers': True},
-                        style_table={'overflowY': 'auto'}
+                        style_table={'overflowY': 'auto'},
+                        page_current= 0,
+                        page_size= 10,
+                        filter_action="native"
                     )
                 ])
             ]),
-
 
             dcc.Tab(label="Partie deux", children=[   #deuxième onglet
                 html.Div(children=[
@@ -250,11 +259,14 @@ def main():
                             id='graph1',
                             figure=fig,
                             style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px'}
+                        ),
+                         dcc.Graph(#affichage du quatrième graph
+                            id='graph2',
+                            figure=fig_masc,
+                            style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px'}
                         )
                 ]),
             ]),
-
-
 
             dcc.Tab(label="Partie Trois", children=[   #quatrième onglet
 
