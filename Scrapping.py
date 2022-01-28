@@ -14,9 +14,7 @@ from numpy import NaN
 import pandas as pd
 import requests
 import string
-import pymongo
-import matplotlib.pyplot as plt
-from googletrans import Translator
+#import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 
 def main():
@@ -31,39 +29,70 @@ def main():
 
     with open('pays.csv','w') as outf:
         outf.write('Année,Dates de début,Dates de fin,Rang,nom_français\n')
-        for row in all_tournaments: #pour chaque lien de la liste  
-            url = row
-            response = requests.get(url, headers=headers)
-            soup = BeautifulSoup(response.text, 'html.parser')
-            phrase = soup.find('div',{'class':'col'}).find('h1').text #correspond à la phrase contenant la date du tournoi
-            annee=[]
-            for i in range(len(phrase)):
-                if phrase[i] in string.digits:
-                    annee.append(phrase[i])
+        with open('but.csv','w') as sortie:
+            sortie.write('CDM , equipe , Goals \n')
+            for row in all_tournaments: #pour chaque lien de la liste  
+                url = row
+                response2 = requests.get(url, headers=headers)
+                soup_tournoi = BeautifulSoup(response2.text, 'html.parser')
+                phrase = soup_tournoi.find('div',{'class':'col'}).find('h1').text #correspond à la phrase contenant la date du tournoi
+                annee=[]
+                for i in range(len(phrase)):
+                    if phrase[i] in string.digits:
+                        annee.append(phrase[i])
 
-           
+            
 
-            div_rank =  soup.find_all('a',{'class':'fp-tournament-standing_standingRow__mPKma'})
-            for i in div_rank :
-                rank = i.find('div',{'class':'fp-tournament-standing_rankDescription__1sEZl'}).find('h6')
-                name_2 = i.find('div',{'class':'fp-tournament-standing_teamName__eYSTw'}).find('h3').text
+                div_rank =  soup_tournoi.find_all('a',{'class':'fp-tournament-standing_standingRow__mPKma'})
+                for i in div_rank :
+                    rank = i.find('div',{'class':'fp-tournament-standing_rankDescription__1sEZl'}).find('h6')
+                    name_2 = i.find('div',{'class':'fp-tournament-standing_teamName__eYSTw'}).find('h3').text
+
+                    #---------------
+
+                        #l'année est composée des différents chiffres de la liste "annee" qui a été conçue au dessus
+                    year=''
+                    for i in range(len(annee)):
+                        year+=annee[i]
+
+
+                    #pour les dates, on split les dates de début et de fin grâce au "-" et on affecte les deux valeurs dans les bonnes colonnes
+                    dates = soup_tournoi.find('div',{'class':'col'}).find('h6').text
+                    dates_liste=dates.split("-")
+                    date_debut=dates_liste[0]
+                    date_fin=dates_liste[1]
+                    #-------------------
+
+                    outf.write(year+','+date_debut+','+date_fin+','+rank.text+','+name_2+'\n')
 
                 #---------------
-
-                    #l'année est composée des différents chiffres de la liste "annee" qui a été conçue au dessus
-                year=''
-                for i in range(len(annee)):
-                    year+=annee[i]
+                #On va maintenant récuperer les différentes coupe du monde renseignant le nombre de but des équipes placées sur le podium.
 
 
-                #pour les dates, on split les dates de début et de fin grâce au "-" et on affecte les deux valeurs dans les bonnes colonnes
-                dates = soup.find('div',{'class':'col'}).find('h6').text
-                dates_liste=dates.split("-")
-                date_debut=dates_liste[0]
-                date_fin=dates_liste[1]
-                #-------------------
+                cdm = soup_tournoi.find('div',{'class':'fp-tournament-standing_hero__text__2G3_Z'}).find('h6') #on récupere la coupe du monde en question
 
-                outf.write(year+','+date_debut+','+date_fin+','+rank.text+','+name_2+'\n')
+                for j in soup_tournoi.find_all('a',{'class':'fp-tournament-standing_standingRow__mPKma'}) :
+                    if j.get('href'):
+                        x = 'https://www.fifa.com'+j['href']
+                        response3 = requests.get(x, headers=headers)
+                        soup_equipe = BeautifulSoup(response3.text, 'html.parser')
+                        if '2018russia' in x:
+                            for i in soup_equipe.find_all('div',{'class':'fp-stat-card-vertical_card__krJHI undefined'}):
+                                y = i.find('h6').text
+                                if y == 'Goals':
+                                    goal = i.find('h2')
+                                    nom_equipe = soup_equipe.find('div',{'class':'fp-team-banner_Team__3SPEH'}).find('h1')
+                                    #print(cdm.text[26:]+" : "+ nom_equipe.text + " : " + goal.text)
+                                    sortie.write(cdm.text[26:]+" , "+ nom_equipe.text + " , " + goal.text+'\n')
+                        else:
+                            goal = soup_equipe.find('div',{'class':'fp-stat-card-vertical_card__krJHI undefined'}).find('h2')
+                            nom_equipe = soup_equipe.find('div',{'class':'fp-team-banner_Team__3SPEH'}).find('h1')
+                            #print(cdm.text[26:]+" : "+ nom_equipe.text + " : " + goal.text)
+                            sortie.write(cdm.text[26:]+" , "+ nom_equipe.text + " , " + goal.text+'\n')
+
+
+                
+
 
 
     #SCRAPPING DES DONNÉES CDM FEMININ
@@ -73,40 +102,69 @@ def main():
     soup_f = BeautifulSoup(response_f.text, 'html.parser')
     all_href_f = [elt['href'] for elt in soup_f.findAll('a') if elt.get('href')  ]
     all_tournaments_f = ['https://www.fifa.com'+elt for elt in all_href_f if '/fr/tournaments/womens/womensworldcup/australia-new-zealand2023'!= elt if '/fr/tournaments/womens/womensworldcup/' in elt]
-
+    
     with open('pays_f.csv','w') as outf:
         outf.write('Année,Dates de début,Dates de fin,Rang,nom_français\n')
-        for row in all_tournaments_f: #pour chaque lien de la liste  
-            url = row
-            response = requests.get(url, headers=headers_f)
-            soup = BeautifulSoup(response.text, 'html.parser')
-            phrase = soup.find('div',{'class':'col'}).find('h1').text
-            annee=[]
-            for i in range(len(phrase)):
-                if phrase[i] in string.digits:
-                    annee.append(phrase[i])
+        with open('but_f.csv','w') as sortie:
+            sortie.write('CDM , equipe , Goals \n')
+            for row in all_tournaments_f: #pour chaque lien de la liste  
+                url = row
+                response2 = requests.get(url, headers=headers)
+                soup_tournoi = BeautifulSoup(response2.text, 'html.parser')
+                phrase = soup_tournoi.find('div',{'class':'col'}).find('h1').text #correspond à la phrase contenant la date du tournoi
+                annee=[]
+                for i in range(len(phrase)):
+                    if phrase[i] in string.digits:
+                        annee.append(phrase[i])
 
-            div_rank =  soup.find_all('a',{'class':'fp-tournament-standing_standingRow__mPKma'})
-            for i in div_rank :
-                rank = i.find('div',{'class':'fp-tournament-standing_rankDescription__1sEZl'}).find('h6')
-                name_2 = i.find('div',{'class':'fp-tournament-standing_teamName__eYSTw'}).find('h3').text
+            
+
+                div_rank =  soup_tournoi.find_all('a',{'class':'fp-tournament-standing_standingRow__mPKma'})
+                for i in div_rank :
+                    rank = i.find('div',{'class':'fp-tournament-standing_rankDescription__1sEZl'}).find('h6')
+                    name_2 = i.find('div',{'class':'fp-tournament-standing_teamName__eYSTw'}).find('h3').text
+
+                    #---------------
+
+                        #l'année est composée des différents chiffres de la liste "annee" qui a été conçue au dessus
+                    year=''
+                    for i in range(len(annee)):
+                        year+=annee[i]
+
+
+                    #pour les dates, on split les dates de début et de fin grâce au "-" et on affecte les deux valeurs dans les bonnes colonnes
+                    dates = soup_tournoi.find('div',{'class':'col'}).find('h6').text
+                    dates_liste=dates.split("-")
+                    date_debut=dates_liste[0]
+                    date_fin=dates_liste[1]
+                    #-------------------
+
+                    outf.write(year+','+date_debut+','+date_fin+','+rank.text+','+name_2+'\n')
 
                 #---------------
-
-                    #l'année est composée des différents chiffres de la liste "annee" qui a été conçue au dessus
-                year=''
-                for i in range(len(annee)):
-                    year+=annee[i]
+                #On va maintenant récuperer les différentes coupe du monde renseignant le nombre de but des équipes placées sur le podium.
 
 
-                #pour les dates, on split les dates de début et de fin grâce au "-" et on affecte les deux valeurs dans les bonnes colonnes
-                dates = soup.find('div',{'class':'col'}).find('h6').text
-                dates_liste=dates.split("-")
-                date_debut=dates_liste[0]
-                date_fin=dates_liste[1]
-                #-------------------
+                cdm = soup_tournoi.find('div',{'class':'fp-tournament-standing_hero__text__2G3_Z'}).find('h6') #on récupere la coupe du monde en question
 
-                outf.write(year+','+date_debut+','+date_fin+','+rank.text+','+name_2+'\n')
+                for j in soup_tournoi.find_all('a',{'class':'fp-tournament-standing_standingRow__mPKma'}) :
+                    if j.get('href'):
+                        x = 'https://www.fifa.com'+j['href']
+                        response3 = requests.get(x, headers=headers)
+                        soup_equipe = BeautifulSoup(response3.text, 'html.parser')
+                        if 'france2019' in x:
+                            for i in soup_equipe.find_all('div',{'class':'fp-stat-card-vertical_card__krJHI undefined'}):
+                                y = i.find('h6').text
+                                if y == 'Goals':
+                                    goal = i.find('h2')
+                                    nom_equipe = soup_equipe.find('div',{'class':'fp-team-banner_Team__3SPEH'}).find('h1')
+                                    #print(cdm.text[26:]+" : "+ nom_equipe.text + " : " + goal.text)
+                                    sortie.write(cdm.text[26:]+" , "+ nom_equipe.text + " , " + goal.text+'\n')
+                        else:
+                            goal = soup_equipe.find('div',{'class':'fp-stat-card-vertical_card__krJHI undefined'}).find('h2')
+                            nom_equipe = soup_equipe.find('div',{'class':'fp-team-banner_Team__3SPEH'}).find('h1')
+                            #print(cdm.text[26:]+" : "+ nom_equipe.text + " : " + goal.text)
+                            sortie.write(cdm.text[26:]+" , "+ nom_equipe.text + " , " + goal.text+'\n')
 
     #SCRAPPING DES DONNÉES GÉOGRAPHIQUES
 
