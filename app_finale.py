@@ -158,7 +158,7 @@ def main():
     #traduction des noms des pays
     traduction(df_CM_feminin['nom_français'])
     traduction(df_CM_masculin['nom_français'])
-    traduction(df_coord['nom'])
+    df_coord['CDM']=traduction(df_coord['nom']) #création d'une nouvelle colonne correspondant à la traduction d'une autre
 
     #on change les valeurs qui ne sont pas bien écrites
     fonction_correspondance(df_CM_masculin['nom_français'])
@@ -170,6 +170,7 @@ def main():
     #on supprime aussi les valeurs pour lesquelles le code alpha3 n'existe plus. généralement c'est parce que le pays n'existe plus; ex: Yougoslavie
     df_CM_masculin=pd.merge(df_CM_masculin,df_pays,on='nom_français',how='outer').dropna(subset=['Année','alpha3'])
     df_CM_feminin=pd.merge(df_CM_feminin,df_pays,on='nom_français',how='outer').dropna(subset=['Année', 'alpha3'])
+  
 
     #Modification des années du tournoi féminin (certaines n'étaient pas au bon format)
     for i in range(len(df_CM_feminin["Année"])): #on modifie le format des années qui ne sont pas écrites en entier

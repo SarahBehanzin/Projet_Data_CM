@@ -48,8 +48,11 @@ df_but_masc['Année'],df_but_masc['CDM']=split_columns(df_but_masc['CDM'], df_bu
 df_but_fem['Année'],df_but_fem['CDM']=split_columns(df_but_fem['CDM'], df_but_fem['Année'])
 
 traduction(df_coord['nom'])
+df_coord['CDM']=df_coord['nom']
 
-print(df_coord)
+df_but_masc=pd.merge(df_but_masc,df_coord,on='CDM', how='outer')
+
+print(df_but_masc)
 
 # with open('geo.csv','w') as outf:
 #     outf.write('alpha2, latitude, longitude, nom_anglais\n')
