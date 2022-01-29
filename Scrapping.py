@@ -84,6 +84,12 @@ def main():
                                     nom_equipe = soup_equipe.find('div',{'class':'fp-team-banner_Team__3SPEH'}).find('h1')
                                     #print(cdm.text[26:]+" : "+ nom_equipe.text + " : " + goal.text)
                                     sortie.write(cdm.text[27:-1]+","+ nom_equipe.text + "," + goal.text+'\n')
+                        elif '1982spain' in x :
+                            goal = soup_equipe.find('div',{'class':'fp-stat-card-vertical_card__krJHI undefined'}).find('h2')
+                            nom_equipe = soup_equipe.find('div',{'class':'fp-team-banner_Team__3SPEH'}).find('h1')
+                            #print(cdm.text[26:]+" : "+ nom_equipe.text + " : " + goal.text)
+                            sortie.write(cdm.text[27:]+","+ nom_equipe.text + "," + goal.text+'\n') 
+                        
                         else:
                             goal = soup_equipe.find('div',{'class':'fp-stat-card-vertical_card__krJHI undefined'}).find('h2')
                             nom_equipe = soup_equipe.find('div',{'class':'fp-team-banner_Team__3SPEH'}).find('h1')
@@ -196,7 +202,7 @@ def main():
     compteur = 0
 
     with open('coord.csv','w') as outf:
-        outf.write('pays,latitude,longitude,nom\n')
+        outf.write('pays,latitude,longitude,CDM\n')
         for i in soup_coord.find_all('td'):
             compteur = compteur +1
             if compteur%4==1:
