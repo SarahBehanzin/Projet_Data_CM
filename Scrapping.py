@@ -196,7 +196,7 @@ def main():
     compteur = 0
 
     with open('coord.csv','w') as outf:
-        outf.write('pays, latitude , longitude, nom\n')
+        outf.write('pays,latitude,longitude,nom\n')
         for i in soup_coord.find_all('td'):
             compteur = compteur +1
             if compteur%4==1:
