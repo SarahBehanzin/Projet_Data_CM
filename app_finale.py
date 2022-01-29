@@ -119,29 +119,30 @@ def cursor_to_liste(cursor):
         y.append(list(liste[i].values())[1]) #dans la liste y, on ajoute la seconde partie des valeurs du dictionnaire
     return x,y #on retourne les deux listes
 
-    def split_columns(col,new_col):
-        '''
-        Retourne deux colonnes en fonction de la valeur d'une
+def split_columns(col,new_col):
+    '''
+    Retourne deux colonnes en fonction de la valeur d'une
 
-        Args:
-            col: colonne de base
-            new_col: nouvellle colonne
+    Args:
+        col: colonne de base
+        new_col: nouvellle colonne
         
-        Returns: les valeurs des deux colonnes
-        '''
-        for i in range(len(col)):#on parcourt la colonne de base
-            taille=len(col[i].split(' '))#taille correspond à la taille de la colonne une fois coupée en fonction des espaces
-            new_col[i]=new_col[i].split(' ')[taille-1]#la nouvelle colonne contient le dernier élément de la colonne de base coupée
-            col[i]=col[i].split(new_col[i])[0] #la colonne de base ne garde que le reste
-        return new_col,col #on retourne les deux colonnes
+    Returns: les valeurs des deux colonnes
+    '''
+    for i in range(len(col)):#on parcourt la colonne de base
+        taille=len(col[i].split(' '))#taille correspond à la taille de la colonne une fois coupée en fonction des espaces
+        new_col[i]=new_col[i].split(' ')[taille-1]#la nouvelle colonne contient le dernier élément de la colonne de base coupée
+        col[i]=col[i].split(new_col[i])[0] #la colonne de base ne garde que le reste
+    return new_col,col #on retourne les deux colonnes
+        
 
 def main():
 
 #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     #METTRE LES DONNÉES SOUS FORME DE DATAFRAME
-    df_CM_masculin=pd.read_csv('pays.csv')#on lit les données stockées dans le bon fichier csv
-    df_CM_feminin=pd.read_csv('pays_f.csv')#on lit les données stockées dans le bon fichier csv
+    df_CM_masculin=pd.read_csv('pays.csv',encoding="ISO-8859-1")#on lit les données stockées dans le bon fichier csv
+    df_CM_feminin=pd.read_csv('pays_f.csv',encoding="ISO-8859-1")#on lit les données stockées dans le bon fichier csv
 
     #ici on a ajouté un encodage pour pouvoir lire les caractères spéciaux
     df_coord=pd.read_csv('coord.csv',encoding="ISO-8859-1")

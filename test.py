@@ -11,6 +11,25 @@ from lxml import etree
 
 #SCRAPPING DES NOMS DES STADES DES FINALES
 
+df_pays=pd.read_csv("sql-pays.csv", names=["id ", "alpha2", "alpha3", "nom_français", "nom_anglais"]) #on lit les données et on rajoute le header car il n'était pas dans le fichier
+
+def traduction(document):
+    '''
+    Traduie un mot présent dans la colonne une dataframe à partir de la dataframe des pays
+
+    Args:
+        document: dataframe que l'on veut traduire
+    
+    Returns:
+        None
+    '''
+    for mot in range(len(document)):
+        for i in range(1,len(df_pays)):#on parcourt le dataframe des pays
+            if df_pays['nom_anglais'][i]==document[mot]:#si le nom anglais fait partie est égal au nom du document
+                document[mot]=str(df_pays['nom_français'][i])#on remplace par le nom français
+    return None
+
+
 def split_columns(col,new_col):
     for i in range(len(col)):
         taille=len(col[i].split(' '))
@@ -28,7 +47,9 @@ df_but_fem['Année']=df_but_fem['CDM']
 df_but_masc['Année'],df_but_masc['CDM']=split_columns(df_but_masc['CDM'], df_but_masc['Année'])
 df_but_fem['Année'],df_but_fem['CDM']=split_columns(df_but_fem['CDM'], df_but_fem['Année'])
 
-print(df_but_fem)
+traduction(df_coord['nom'])
+
+print(df_coord)
 
 # with open('geo.csv','w') as outf:
 #     outf.write('alpha2, latitude, longitude, nom_anglais\n')
