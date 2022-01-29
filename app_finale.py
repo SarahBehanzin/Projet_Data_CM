@@ -119,6 +119,22 @@ def cursor_to_liste(cursor):
         y.append(list(liste[i].values())[1]) #dans la liste y, on ajoute la seconde partie des valeurs du dictionnaire
     return x,y #on retourne les deux listes
 
+    def split_columns(col,new_col):
+        '''
+        Retourne deux colonnes en fonction de la valeur d'une
+
+        Args:
+            col: colonne de base
+            new_col: nouvellle colonne
+        
+        Returns: les valeurs des deux colonnes
+        '''
+        for i in range(len(col)):#on parcourt la colonne de base
+            taille=len(col[i].split(' '))#taille correspond à la taille de la colonne une fois coupée en fonction des espaces
+            new_col[i]=new_col[i].split(' ')[taille-1]#la nouvelle colonne contient le dernier élément de la colonne de base coupée
+            col[i]=col[i].split(new_col[i])[0] #la colonne de base ne garde que le reste
+        return new_col,col #on retourne les deux colonnes
+
 def main():
 
 #------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -127,10 +143,21 @@ def main():
     df_CM_masculin=pd.read_csv('pays.csv')#on lit les données stockées dans le bon fichier csv
     df_CM_feminin=pd.read_csv('pays_f.csv')#on lit les données stockées dans le bon fichier csv
 
+    #ici on a ajouté un encodage pour pouvoir lire les caractères spéciaux
+    df_coord=pd.read_csv('coord.csv',encoding="ISO-8859-1")
+    df_but_fem=pd.read_csv('but_f.csv',encoding="ISO-8859-1")
+    df_but_masc=pd.read_csv('but.csv',encoding="ISO-8859-1")
+
     #TRAITEMENT DES DONNÉES
+    df_but_masc['Année']=df_but_masc['CDM']
+    df_but_fem['Année']=df_but_fem['CDM']
+    df_but_masc['Année'],df_but_masc['CDM']=split_columns(df_but_masc['CDM'], df_but_masc['Année'])
+    df_but_fem['Année'],df_but_fem['CDM']=split_columns(df_but_fem['CDM'], df_but_fem['Année'])
+
     #traduction des noms des pays
     traduction(df_CM_feminin['nom_français'])
     traduction(df_CM_masculin['nom_français'])
+    traduction(df_coord['nom'])
 
     #on change les valeurs qui ne sont pas bien écrites
     fonction_correspondance(df_CM_masculin['nom_français'])
@@ -180,7 +207,7 @@ def main():
     graph_meilleur_masc=plt.bar(Meilleur_masc_x, Meilleur_masc_y,1.0,color='r')#CM masculin
     plt.savefig('graph2.png')#on enregistre dans le fichier graph2.png
 
-
+#----------------------------------------------------------------------------------------------
  
     app = dash.Dash(__name__)#création du dashboard
 
