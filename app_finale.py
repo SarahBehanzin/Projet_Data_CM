@@ -217,26 +217,17 @@ def main():
     #Graphique
 
     #Graphiques montrant le nombre de fois pour lesquels chaque pays a été dans les 4 premiers du classement
-    graph_meilleur_fem=plt.bar(Meilleur_fem_x, Meilleur_fem_y,1.0,color='b') #CM féminin
-    plt.savefig('graph1.png')#on enregistre dans le fichier graph1.png
+    fig = px.bar(x=Meilleur_fem_x, y=Meilleur_fem_y,title=("Graphique barres représentant le nombre de fois où chaque équipe a été dans les 4 premiers du classement (CM_féminine)"))
+    fig_masc=px.bar(x=Meilleur_masc_x, y=Meilleur_masc_y,title="Graphique barres représentant le nombre de fois où chaque équipe a été dans les 4 premiers du classement (CM_masculine)")
 
-    plt.clf()#on supprime ce qui était dans la figure pour éviter que les deux graphiques ne se superposent
-    f, graph_meilleur_masc = plt.subplots(figsize=(18,5))
-    graph_meilleur_masc=plt.bar(Meilleur_masc_x, Meilleur_masc_y,1.0,color='r')#CM masculin
-    plt.savefig('graph2.png')#on enregistre dans le fichier graph2.png
 
     #graph pie
-
     graph_pie=make_subplots(rows=1, cols=2, specs=[[{'type':'domain'}, {'type':'domain'}]])
-    graph_pie.add_trace(go.Pie(labels=But_masc_x, values=But_masc_y, name="CDM masculin"),1, 1)
-    graph_pie.add_trace(go.Pie(labels=But_fem_x, values=But_fem_y, name="CDM féminin"),1, 2)
-
-    graph_pie.update_layout(
-    title_text="Moyenne de buts faits par les pays arrivés dans les 4 premiers de 1930 à 2018",
-    annotations=[dict(text='CDM_masc', x=0.18, y=0.5, font_size=20, showarrow=False), dict(text='CDM_fem', x=0.82, y=0.5, font_size=20, showarrow=False)])
-
-
-#Création des cartes
+    graph_pie.add_trace(go.Pie(labels=But_masc_x, values=But_masc_y, name="CDM masculine"),1, 1)
+    graph_pie.add_trace(go.Pie(labels=But_fem_x, values=But_fem_y, name="CDM féminine"),1, 2)
+    graph_pie.update_layout(title_text="Moyenne de buts faits par les pays arrivés dans les 4 premiers de 1930 à 2018",annotations=[dict(text='CDM_masc', x=0.18, y=0.5, font_size=20, showarrow=False), dict(text='CDM_fem', x=0.82, y=0.5, font_size=20, showarrow=False)])
+    
+    #Création des cartes
     #suppression des duplicats et remise à niveau des index
     df_coord_fem=df_coord_fem.drop_duplicates(subset='CDM')
     df_coord_fem=df_coord_fem.reset_index(drop=True)
@@ -275,9 +266,6 @@ def main():
     app = dash.Dash(__name__)#création du dashboard
 
     #CRÉATION DES GRAPHS QUI VONT SERVIR POUR L'APPLICATION
-    fig = px.bar(x=Meilleur_fem_x, y=Meilleur_fem_y,title=("Graphique barres représentant le nombre de fois où chaque équipe a été dans les 4 premiers du classement (CM_féminine)"))
-    fig_masc=px.bar(x=Meilleur_masc_x, y=Meilleur_masc_y,title="Graphique barres représentant le nombre de fois où chaque équipe a été dans les 4 premiers du classement (CM_masculine)")
-
     app.layout = html.Div(children=[  
 
         html.H1(children='Dashboard sur les coupes du mondes de football (féminines et masculines)', style={'textAlign': 'center'}),#titre général du dashboard
@@ -413,7 +401,7 @@ def main():
 
                 html.Div(children=[
                     html.H1(children='Cartes', style={'textAlign' :'center', 'background-color':'#dfe4ea'}),#titre de la page
-                    html.H1(children='Cartes des pays ayant particpé aux coupes du mondes féminines', style={'textAlign':'left'}),#titre de la première carte
+                    html.H1(children='Cartes des pays ayant particpéa(arrivés dans les 4 premiers) aux coupes du mondes féminines', style={'textAlign':'left'}),#titre de la première carte
                       html.Iframe(#affichage de la première map
                         id='map1',
                         srcDoc=open('map_fem.html','r').read(),
@@ -421,7 +409,7 @@ def main():
                         height='600',
                         style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px', 'margin':'25'}
                     ),
-                    html.H1(children='Cartes des pays ayant particpé aux coupes du mondes masculines', style={'textAlign':'left'}),#titre de la deuxième carte
+                    html.H1(children='Cartes des pays ayant particpé(arrivés dans les 4 premiers) aux coupes du mondes masculines', style={'textAlign':'left'}),#titre de la deuxième carte
                     html.Iframe(#affichage de la première map
                         id='map2',
                         srcDoc=open('map_masc.html','r').read(),
