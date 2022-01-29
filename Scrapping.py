@@ -30,7 +30,7 @@ def main():
     with open('pays.csv','w') as outf:
         outf.write('Année,Dates de début,Dates de fin,Rang,nom_français\n')
         with open('but.csv','w') as sortie:
-            sortie.write('CDM , equipe , Goals \n')
+            sortie.write('CDM,equipe,Goals\n')
             for row in all_tournaments: #pour chaque lien de la liste  
                 url = row
                 response2 = requests.get(url, headers=headers)
@@ -106,7 +106,7 @@ def main():
     with open('pays_f.csv','w') as outf:
         outf.write('Année,Dates de début,Dates de fin,Rang,nom_français\n')
         with open('but_f.csv','w') as sortie:
-            sortie.write('CDM , equipe , Goals \n')
+            sortie.write('CDM,equipe,Goals\n')
             for row in all_tournaments_f: #pour chaque lien de la liste  
                 url = row
                 response2 = requests.get(url, headers=headers)
