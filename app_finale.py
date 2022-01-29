@@ -174,9 +174,17 @@ def main():
     #on supprime aussi les valeurs pour lesquelles le code alpha3 n'existe plus. généralement c'est parce que le pays n'existe plus; ex: Yougoslavie
     df_CM_masculin=pd.merge(df_CM_masculin,df_pays,on='nom_français',how='outer').dropna(subset=['Année','alpha3'])
     df_CM_feminin=pd.merge(df_CM_feminin,df_pays,on='nom_français',how='outer').dropna(subset=['Année', 'alpha3'])
-    df_coord_fem=pd.merge(df_coord,df_CM_masculin,on='alpha2',how='outer').dropna(subset=['Année', 'alpha3'])
+    df_coord_fem=pd.merge(df_coord,df_CM_feminin,on='alpha2',how='outer').dropna(subset=['Année', 'alpha3'])
+    df_coord_masc=pd.merge(df_coord,df_CM_masculin,on='alpha2',how='outer').dropna(subset=['Année', 'alpha3'])
 
+    #suppression des duplicats et remise à niveau des index
     df_coord_fem=df_coord_fem.drop_duplicates(subset='CDM')
+    df_coord_fem=df_coord_fem.reset_index(drop=True)
+    df_coordfem=df_coord_fem
+
+    df_coord_masc=df_coord_masc.drop_duplicates(subset='CDM')
+    df_coord_masc=df_coord_masc.reset_index(drop=True)
+    df_coordmasc=df_coord_masc
 
     #Modification des années du tournoi féminin (certaines n'étaient pas au bon format)
     for i in range(len(df_CM_feminin["Année"])): #on modifie le format des années qui ne sont pas écrites en entier
@@ -214,6 +222,32 @@ def main():
     f, graph_meilleur_masc = plt.subplots(figsize=(18,5))
     graph_meilleur_masc=plt.bar(Meilleur_masc_x, Meilleur_masc_y,1.0,color='r')#CM masculin
     plt.savefig('graph2.png')#on enregistre dans le fichier graph2.png
+
+#Création des cartes
+
+    #carte féminine
+    longitude_fem=df_coordfem['longitude'] #stockage des longitudes dans cette valeur
+    latitude_fem=df_coordfem['latitude'] #stockage des latitudes dans cette valeur
+    pays_fem=df_coordfem['alpha3'] #stockages des codes alpha3 dans cette valeur
+
+    map_fem=folium.Map(location=[46.227638,2.213749], tiles='OpenStreetMap', zoom_start=2)#initialisation de la carte des pays participants(CDM fem)
+
+    for i in range(len(df_coordfem)):#on parcourt le dataframe contenant les coordonnées des pays participants aux CDM féminines
+        folium.Marker(location=[latitude_fem[i],longitude_fem[i]], popup =pays_fem[i],icon=folium.Icon(color="gray", icon='cloud'),show=True).add_to(map_fem)
+
+    map_fem.save(outfile='map_fem.html')#enregistrement de la map
+
+    #carte masculine
+    longitude_masc=df_coordmasc['longitude'] #stockage des longitudes dans cette valeur
+    latitude_masc=df_coordmasc['latitude'] #stockage des latitudes dans cette valeur
+    pays_masc=df_coordmasc['alpha3'] #stockages des codes alpha3 dans cette valeur
+
+    map_masc=folium.Map(location=[46.227638,2.213749], tiles='OpenStreetMap', zoom_start=2)#initialisation de la carte des pays participants(CDM masc)
+
+    for i in range(len(df_coordmasc)):#on parcourt le dataframe contenant les coordonnées des pays participants aux CDM masculines
+        folium.Marker(location=[latitude_masc[i],longitude_masc[i]], popup =pays_masc[i],icon=folium.Icon(color="darkred", icon='cloud'),show=True).add_to(map_masc)
+
+    map_masc.save(outfile='map_masc.html')#enregistrement de la map
 
 #----------------------------------------------------------------------------------------------
  
@@ -315,7 +349,7 @@ def main():
 
             dcc.Tab(label="Analyse par les graphiques", children=[   #deuxième onglet
                 html.Div(children=[
-                    html.H1(children='Partie 2', style={'textAlign' :'center', 'background-color':'#dfe4ea'}),#titre de la page
+                    html.H1(children='Différents graphiques', style={'textAlign' :'center', 'background-color':'#dfe4ea'}),#titre de la page
                         dcc.Textarea(
                         id='histo',
                         title='Graphiques',
@@ -349,11 +383,26 @@ def main():
                 ]),
             ]),
 
-            dcc.Tab(label="Partie Trois", children=[   #quatrième onglet
+            dcc.Tab(label="Cartes des pays participants", children=[   #quatrième onglet
 
                 html.Div(children=[
                     html.H1(children='Cartes', style={'textAlign' :'center', 'background-color':'#dfe4ea'}),#titre de la page
-                    html.H1(children='Partie 3', style={'textAlign':'left'}),#titre de la première carte
+                    html.H1(children='Cartes des pays ayant particpé aux coupes du mondes féminines', style={'textAlign':'left'}),#titre de la première carte
+                      html.Iframe(#affichage de la première map
+                        id='map1',
+                        srcDoc=open('map_fem.html','r').read(),
+                        width='60%',
+                        height='600',
+                        style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px', 'margin':'25'}
+                    ),
+                    html.H1(children='Cartes des pays ayant particpé aux coupes du mondes masculines', style={'textAlign':'left'}),#titre de la deuxième carte
+                    html.Iframe(#affichage de la première map
+                        id='map2',
+                        srcDoc=open('map_masc.html','r').read(),
+                        width='60%',
+                        height='600',
+                        style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px', 'margin':'25'}
+                    )
                 ])
             ])    
         ])

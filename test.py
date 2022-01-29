@@ -197,9 +197,10 @@ def main():
     map_fem=folium.Map(location=[46.227638,2.213749], tiles='OpenStreetMap', zoom_start=2.5)
 
     for i in range(len(df_coordfem)):
-        folium.Marker(location=[latitude_fem[i],longitude_fem[i]], popup =pays_fem[i]).add_to(map_fem)
+        folium.Marker(location=[latitude_fem[i],longitude_fem[i]], popup =pays_fem[i],icon=folium.Icon(color="gray", icon='cloud'),show=True).add_to(map_fem)
 
     map_fem.save(outfile='map_fem.html')
+
     return None
 
 if __name__ == '__main__':
