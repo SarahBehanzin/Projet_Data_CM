@@ -11,7 +11,13 @@ from lxml import etree
 
 #SCRAPPING DES NOMS DES STADES DES FINALES
 
-df_but_masc=pd.read_csv('but.csv')
+df_coord=pd.read_csv('coord.csv',encoding="ISO-8859-1")
+df_but_fem=pd.read_csv('but_f.csv',encoding="ISO-8859-1")
+df_but_masc=pd.read_csv('but.csv',encoding="ISO-8859-1")
+
+# print(df_but_masc["CDM"][0].split(' '))
+print(df_but_masc)
+
 
 # with open('geo.csv','w') as outf:
 #     outf.write('alpha2, latitude, longitude, nom_anglais\n')
