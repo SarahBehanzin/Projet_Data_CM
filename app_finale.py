@@ -10,6 +10,8 @@ import pandas as pd
 import numpy as np
 import folium
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 #Importations utiles pour le dashboard
 import plotly_express as px
@@ -146,9 +148,9 @@ def main():
     df_CM_feminin=pd.read_csv('pays_f.csv')#on lit les données stockées dans le bon fichier csv
 
     #ici on a ajouté un encodage pour pouvoir lire les caractères spéciaux
-    df_coord=pd.read_csv('coord.csv',encoding="ISO-8859-1")
-    df_but_fem=pd.read_csv('but_f.csv',encoding="ISO-8859-1")
-    df_but_masc=pd.read_csv('but.csv',encoding="ISO-8859-1")
+    df_coord=pd.read_csv('coord.csv')
+    df_but_fem=pd.read_csv('but_f.csv')
+    df_but_masc=pd.read_csv('but.csv')
 
     #TRAITEMENT DES DONNÉES
     df_but_masc['Année']=df_but_masc['CDM']
@@ -177,15 +179,6 @@ def main():
     df_coord_fem=pd.merge(df_coord,df_CM_feminin,on='alpha2',how='outer').dropna(subset=['Année', 'alpha3'])
     df_coord_masc=pd.merge(df_coord,df_CM_masculin,on='alpha2',how='outer').dropna(subset=['Année', 'alpha3'])
 
-    #suppression des duplicats et remise à niveau des index
-    df_coord_fem=df_coord_fem.drop_duplicates(subset='CDM')
-    df_coord_fem=df_coord_fem.reset_index(drop=True)
-    df_coordfem=df_coord_fem
-
-    df_coord_masc=df_coord_masc.drop_duplicates(subset='CDM')
-    df_coord_masc=df_coord_masc.reset_index(drop=True)
-    df_coordmasc=df_coord_masc
-
     #Modification des années du tournoi féminin (certaines n'étaient pas au bon format)
     for i in range(len(df_CM_feminin["Année"])): #on modifie le format des années qui ne sont pas écrites en entier
         if df_CM_feminin["Année"][i]<50: #si le nombre est inférieur à 50, on lui ajoute 2000
@@ -199,20 +192,29 @@ def main():
     database = client['CM'] #on crée la database CM
     collection_CMmasc = database['CM_masculin'] #création de la collection de la CM masculine
     collection_CMfem=database['CM_feminin'] #création de la collection de la CM féminine
+    collection_but_masc=database['But_masculin']#création de la collection But masculin
+    collection_but_fem=database['But_feminin']#création de la collection But féminin
 
     #on vide les collections pour éviter qu'il y ait un problème à chaque compilation du code
     collection_CMfem.drop()
     collection_CMmasc.drop()
+    collection_but_masc.drop()
+    collection_but_fem.drop()
 
     #insertion des dataframes dans les collections
     collection_CMmasc.insert_many(df_CM_masculin.to_dict(orient='records'))
     collection_CMfem.insert_many(df_CM_feminin.to_dict(orient='records'))
+    collection_but_masc.insert_many(df_but_masc.to_dict(orient='records'))
+    collection_but_fem.insert_many(df_but_fem.to_dict(orient='records'))
 
     #on créé deux listes qui stockent les codes des équipes et le nombre de fois où les pays ont été dans les 4 premiers du tournoi
     Meilleur_masc_x,Meilleur_masc_y=cursor_to_liste(collection_CMmasc.aggregate([{"$group":{"_id":"$alpha3", "nombre_dans_4_premiers_fem":{"$sum":1}}}]))
     Meilleur_fem_x,Meilleur_fem_y=cursor_to_liste(collection_CMfem.aggregate([{"$group":{"_id":"$alpha3", "nombre_dans_4_premiers_fem":{"$sum":1}}}])) 
+    But_masc_x,But_masc_y=cursor_to_liste(collection_but_masc.aggregate([{"$group":{"_id":"$equipe", "moyene_buts":{"$avg":"$Goals"}}}]))
+    But_fem_x,But_fem_y=cursor_to_liste(collection_but_fem.aggregate([{"$group":{"_id":"$equipe", "moyene_buts":{"$avg":"$Goals"}}}]))
+    
 #-----------------------------------------------------------------------------------------
-    #Graphiques
+    #Graphique
 
     #Graphiques montrant le nombre de fois pour lesquels chaque pays a été dans les 4 premiers du classement
     graph_meilleur_fem=plt.bar(Meilleur_fem_x, Meilleur_fem_y,1.0,color='b') #CM féminin
@@ -223,7 +225,26 @@ def main():
     graph_meilleur_masc=plt.bar(Meilleur_masc_x, Meilleur_masc_y,1.0,color='r')#CM masculin
     plt.savefig('graph2.png')#on enregistre dans le fichier graph2.png
 
+    #graph pie
+
+    graph_pie=make_subplots(rows=1, cols=2, specs=[[{'type':'domain'}, {'type':'domain'}]])
+    graph_pie.add_trace(go.Pie(labels=But_masc_x, values=But_masc_y, name="CDM masculin"),1, 1)
+    graph_pie.add_trace(go.Pie(labels=But_fem_x, values=But_fem_y, name="CDM féminin"),1, 2)
+
+    graph_pie.update_layout(
+    title_text="Moyenne de buts faits par les pays arrivés dans les 4 premiers de 1930 à 2018",
+    annotations=[dict(text='CDM_masc', x=0.18, y=0.5, font_size=20, showarrow=False), dict(text='CDM_fem', x=0.82, y=0.5, font_size=20, showarrow=False)])
+
+
 #Création des cartes
+    #suppression des duplicats et remise à niveau des index
+    df_coord_fem=df_coord_fem.drop_duplicates(subset='CDM')
+    df_coord_fem=df_coord_fem.reset_index(drop=True)
+    df_coordfem=df_coord_fem
+
+    df_coord_masc=df_coord_masc.drop_duplicates(subset='CDM')
+    df_coord_masc=df_coord_masc.reset_index(drop=True)
+    df_coordmasc=df_coord_masc
 
     #carte féminine
     longitude_fem=df_coordfem['longitude'] #stockage des longitudes dans cette valeur
@@ -261,7 +282,7 @@ def main():
 
         html.H1(children='Dashboard sur les coupes du mondes de football (féminines et masculines)', style={'textAlign': 'center'}),#titre général du dashboard
 
-        dcc.Tabs(style={'borderTop':'3px solid #212121', 'borderRadius':'6px', 'boxShadow':'2px 2px 30px #a4b0be'}, colors={'background':'#dfe4ea'}, id="tabs", children=[   #création des différents "onglets"
+        dcc.Tabs(style={'borderTop':'3px solid #212121', 'borderRadius':'6px', 'boxShadow':'2px 2px 30px #dfe4ea'}, colors={'background':'#dfe4ea'}, id="tabs", children=[   #création des différents "onglets"
 
             dcc.Tab(label="Présentation", children=[   #premier onglet
                 html.Div(children=[
@@ -351,7 +372,7 @@ def main():
                 html.Div(children=[
                     html.H1(children='Différents graphiques', style={'textAlign' :'center', 'background-color':'#dfe4ea'}),#titre de la page
                         dcc.Textarea(
-                        id='histo',
+                        id='graph',
                         title='Graphiques',
                         value='Voici les graphiques barres représentant le nombre de fois où chaque pays a été dans les 4 premiers du classement.\nSi vous voulez voir à quels pays les codes correspondent, vous pouvez les rechercher dans la  première base de données présente dans le précédent onglet ',
                         style={'fontFamily':'Arial','width':'100%', 'height':'1000', 'textAlign':'left', 'background-color':'#dfe4ea', 'font-size':'medium', 'font-style':'normal', 'resize':'none','border':'none'},
@@ -362,12 +383,12 @@ def main():
                         dcc.Graph(#affichage du quatrième graph
                             id='graph1',
                             figure=fig,
-                            style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px'}
+                            style={'boxShadow':'2px 2px 30px #581845e', 'borderRadius':'10px'}
                         ),
                          dcc.Graph(#affichage du quatrième graph
                             id='graph2',
                             figure=fig_masc,
-                            style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px'}
+                            style={'boxShadow':'2px 2px 30px #581845', 'borderRadius':'10px'}
                         ),
                         dcc.Graph(
                             figure={
@@ -379,7 +400,12 @@ def main():
                                     'title': 'Comparaison des des pays arrivés dans les 4 premiers pour la Coupe du Monde Féminine et Masculine'
                                 }
                             }
-                        )
+                        ),
+                        dcc.Graph(#affichage du quatrième graph
+                            id='graph_pie',
+                            figure=graph_pie,
+                            style={'boxShadow':'2px 2px 30px #581845', 'borderRadius':'10px'}
+                        ),
                 ]),
             ]),
 
