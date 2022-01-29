@@ -11,12 +11,7 @@ from lxml import etree
 
 #SCRAPPING DES NOMS DES STADES DES FINALES
 
-main_url_geo = "https://developers.google.com/public-data/docs/canonical/countries_csv"
-headers_geo = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"}
-response_geo = requests.get(main_url_geo, headers=headers_geo)
-soup_geo = BeautifulSoup(response_geo.text, 'html.parser')
-all_geo=soup_geo.find_all(class_='tr')
-print(all_geo)
+df_but_masc=pd.read_csv('but.csv')
 
 # with open('geo.csv','w') as outf:
 #     outf.write('alpha2, latitude, longitude, nom_anglais\n')
