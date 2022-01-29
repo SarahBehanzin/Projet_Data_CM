@@ -159,12 +159,17 @@ def main():
                                     goal = i.find('h2')
                                     nom_equipe = soup_equipe.find('div',{'class':'fp-team-banner_Team__3SPEH'}).find('h1')
                                     #print(cdm.text[26:]+" : "+ nom_equipe.text + " : " + goal.text)
-                                    sortie.write(cdm.text[26:]+" , "+ nom_equipe.text + " , " + goal.text+'\n')
+                                    sortie.write(cdm.text[35:]+" , "+ nom_equipe.text + " , " + goal.text+'\n')
+                        elif 'chinapr1991' in x or 'sweden1995' in x or 'usa1999' in x  or 'usa2003' in x :
+                            goal = soup_equipe.find('div',{'class':'fp-stat-card-vertical_card__krJHI undefined'}).find('h2')
+                            nom_equipe = soup_equipe.find('div',{'class':'fp-team-banner_Team__3SPEH'}).find('h1')
+                            #print(cdm.text[26:]+" : "+ nom_equipe.text + " : " + goal.text)
+                            sortie.write(cdm.text[46:]+" , "+ nom_equipe.text + " , " + goal.text+'\n')
                         else:
                             goal = soup_equipe.find('div',{'class':'fp-stat-card-vertical_card__krJHI undefined'}).find('h2')
                             nom_equipe = soup_equipe.find('div',{'class':'fp-team-banner_Team__3SPEH'}).find('h1')
                             #print(cdm.text[26:]+" : "+ nom_equipe.text + " : " + goal.text)
-                            sortie.write(cdm.text[26:]+" , "+ nom_equipe.text + " , " + goal.text+'\n')
+                            sortie.write(cdm.text[35:]+" , "+ nom_equipe.text + " , " + goal.text+'\n')
 
     #SCRAPPING DES DONNÉES GÉOGRAPHIQUES
 
