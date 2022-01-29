@@ -258,10 +258,44 @@ def main():
                         page_size= 10,
                         filter_action="native"
                     ),
+
                     html.H1(children='Base de donnée scrappée : Coupe du monde féminine', style={'textAlign':'left'}),#deuxième dataframe
                     dash_table.DataTable(#affichage de la base de donnée 
                         data=df_CM_feminin.to_dict('records'),
                         columns=[{'id': c, 'name': c} for c in df_CM_feminin.columns],
+                        page_action='native',
+                        fixed_rows={'headers': True},
+                        style_table={'overflowY': 'auto'},
+                        page_current= 0,
+                        page_size= 10,
+                        filter_action="native"
+                    ),
+                    html.H1(children='Base de donnée scrappée : Coordonnées géographiques des pays du monde', style={'textAlign':'left'}),#deuxième dataframe
+                    dash_table.DataTable(#affichage de la base de donnée 
+                        data=df_coord.to_dict('records'),
+                        columns=[{'id': c, 'name': c} for c in df_coord.columns],
+                        page_action='native',
+                        fixed_rows={'headers': True},
+                        style_table={'overflowY': 'auto'},
+                        page_current= 0,
+                        page_size= 10,
+                        filter_action="native"
+                    ),
+                    html.H1(children='Base de donnée scrappée : But des 4 premiers - CDM masculine', style={'textAlign':'left'}),#deuxième dataframe
+                    dash_table.DataTable(#affichage de la base de donnée 
+                        data=df_but_masc.to_dict('records'),
+                        columns=[{'id': c, 'name': c} for c in df_but_masc.columns],
+                        page_action='native',
+                        fixed_rows={'headers': True},
+                        style_table={'overflowY': 'auto'},
+                        page_current= 0,
+                        page_size= 10,
+                        filter_action="native"
+                    ),
+                    html.H1(children='Base de donnée scrappée : But des 4 premiers - CDM féminine', style={'textAlign':'left'}),#deuxième dataframe
+                    dash_table.DataTable(#affichage de la base de donnée 
+                        data=df_but_fem.to_dict('records'),
+                        columns=[{'id': c, 'name': c} for c in df_but_fem.columns],
                         page_action='native',
                         fixed_rows={'headers': True},
                         style_table={'overflowY': 'auto'},
