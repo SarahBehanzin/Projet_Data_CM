@@ -8,6 +8,7 @@ authors:
 import urllib.request
 import pandas as pd
 import numpy as np
+import folium
 import matplotlib.pyplot as plt
 
 #Importations utiles pour le dashboard
@@ -141,8 +142,8 @@ def main():
 #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     #METTRE LES DONNÉES SOUS FORME DE DATAFRAME
-    df_CM_masculin=pd.read_csv('pays.csv',encoding="ISO-8859-1")#on lit les données stockées dans le bon fichier csv
-    df_CM_feminin=pd.read_csv('pays_f.csv',encoding="ISO-8859-1")#on lit les données stockées dans le bon fichier csv
+    df_CM_masculin=pd.read_csv('pays.csv')#on lit les données stockées dans le bon fichier csv
+    df_CM_feminin=pd.read_csv('pays_f.csv')#on lit les données stockées dans le bon fichier csv
 
     #ici on a ajouté un encodage pour pouvoir lire les caractères spéciaux
     df_coord=pd.read_csv('coord.csv',encoding="ISO-8859-1")
@@ -173,7 +174,9 @@ def main():
     #on supprime aussi les valeurs pour lesquelles le code alpha3 n'existe plus. généralement c'est parce que le pays n'existe plus; ex: Yougoslavie
     df_CM_masculin=pd.merge(df_CM_masculin,df_pays,on='nom_français',how='outer').dropna(subset=['Année','alpha3'])
     df_CM_feminin=pd.merge(df_CM_feminin,df_pays,on='nom_français',how='outer').dropna(subset=['Année', 'alpha3'])
-    # df_coord=pd.merge(df_coord,df_CM_masculin,on='alpha2',how='outer').dropna(subset=['Année', 'alpha3'])
+    df_coord_fem=pd.merge(df_coord,df_CM_masculin,on='alpha2',how='outer').dropna(subset=['Année', 'alpha3'])
+
+    df_coord_fem=df_coord_fem.drop_duplicates(subset='CDM')
 
     #Modification des années du tournoi féminin (certaines n'étaient pas au bon format)
     for i in range(len(df_CM_feminin["Année"])): #on modifie le format des années qui ne sont pas écrites en entier
@@ -222,7 +225,7 @@ def main():
 
     app.layout = html.Div(children=[  
 
-        html.H1(children='Titre', style={'textAlign': 'center'}),#titre général du dashboard
+        html.H1(children='Dashboard sur les coupes du mondes de football (féminines et masculines)', style={'textAlign': 'center'}),#titre général du dashboard
 
         dcc.Tabs(style={'borderTop':'3px solid #212121', 'borderRadius':'6px', 'boxShadow':'2px 2px 30px #a4b0be'}, colors={'background':'#dfe4ea'}, id="tabs", children=[   #création des différents "onglets"
 

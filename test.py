@@ -9,6 +9,7 @@ authors:
 import urllib.request
 import pandas as pd
 import numpy as np
+import folium
 import matplotlib.pyplot as plt
 
 #Importations utiles pour le dashboard
@@ -142,8 +143,8 @@ def main():
 #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     #METTRE LES DONNÉES SOUS FORME DE DATAFRAME
-    df_CM_masculin=pd.read_csv('pays.csv',encoding="ISO-8859-1")#on lit les données stockées dans le bon fichier csv
-    df_CM_feminin=pd.read_csv('pays_f.csv',encoding="ISO-8859-1")#on lit les données stockées dans le bon fichier csv
+    df_CM_masculin=pd.read_csv('pays.csv')#on lit les données stockées dans le bon fichier csv
+    df_CM_feminin=pd.read_csv('pays_f.csv')#on lit les données stockées dans le bon fichier csv
 
     #ici on a ajouté un encodage pour pouvoir lire les caractères spéciaux
     df_coord=pd.read_csv('coord.csv',encoding="ISO-8859-1")
@@ -176,6 +177,10 @@ def main():
     df_CM_feminin=pd.merge(df_CM_feminin,df_pays,on='nom_français',how='outer').dropna(subset=['Année', 'alpha3'])
     df_coord_fem=pd.merge(df_coord,df_CM_masculin,on='alpha2',how='outer').dropna(subset=['Année', 'alpha3'])
 
+    df_coord_fem=df_coord_fem.drop_duplicates(subset='CDM')
+    df_coord_fem=df_coord_fem.reset_index(drop=True)
+    df_coordfem=df_coord_fem
+
     #Modification des années du tournoi féminin (certaines n'étaient pas au bon format)
     for i in range(len(df_CM_feminin["Année"])): #on modifie le format des années qui ne sont pas écrites en entier
         if df_CM_feminin["Année"][i]<50: #si le nombre est inférieur à 50, on lui ajoute 2000
@@ -183,11 +188,24 @@ def main():
         if df_CM_feminin["Année"][i]>50 and df_CM_feminin['Année'][i]<100: #si le nombre est supérieur à 50 et inférieur à 100, on ajoute 1900
             df_CM_feminin['Année'][i]=1900+df_CM_feminin['Année'][i]
 
-    print(df_coord_fem)
+    #Création des cartes
+
+    longitude_fem=df_coordfem['longitude']
+    latitude_fem=df_coordfem['latitude']
+    pays_fem=df_coordfem['alpha3']
+
+    map_fem=folium.Map(location=[46.227638,2.213749], tiles='OpenStreetMap', zoom_start=2.5)
+
+    for i in range(len(df_coordfem)):
+        folium.Marker(location=[latitude_fem[i],longitude_fem[i]], popup =pays_fem[i]).add_to(map_fem)
+
+    map_fem.save(outfile='map_fem.html')
     return None
 
 if __name__ == '__main__':
     main()
+
+
 # from cgitb import text
 # from distutils.log import info
 # import string
