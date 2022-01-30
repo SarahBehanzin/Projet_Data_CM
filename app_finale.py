@@ -212,7 +212,7 @@ def main():
     graph_pie=make_subplots(rows=1, cols=2, specs=[[{'type':'domain'}, {'type':'domain'}]])
     graph_pie.add_trace(go.Pie(labels=But_masc_x, values=But_masc_y, name="CDM masculine"),1, 1)
     graph_pie.add_trace(go.Pie(labels=But_fem_x, values=But_fem_y, name="CDM féminine"),1, 2)
-    graph_pie.update_layout(title_text="Moyenne de buts faits par les pays arrivés dans les 4 premiers de 1930 à 2018",annotations=[dict(text='CDM_masc', x=0.18, y=0.5, font_size=20, showarrow=False), dict(text='CDM_fem', x=0.82, y=0.5, font_size=20, showarrow=False)])
+    graph_pie.update_layout(title_text="Moyenne des buts sur un tournoi, faits par les équipes étant arrivées dans les 4 premiers du classement (de 1930 à 2018)",annotations=[dict(text='CDM_masc', x=0.18, y=0.5, font_size=20, showarrow=False), dict(text='CDM_fem', x=0.82, y=0.5, font_size=20, showarrow=False)])
     
     #Création des cartes
     #suppression des duplicats et remise à niveau des index
@@ -256,7 +256,7 @@ def main():
     app.layout = html.Div(children=[  
 
         html.H1(children='Dashboard sur les coupes du mondes de football (féminines et masculines)', style={'textAlign': 'center'}),#titre général du dashboard
-
+        #Partie présentation du projet / bases de données
         dcc.Tabs(style={'borderTop':'3px solid #212121', 'borderRadius':'6px', 'boxShadow':'2px 2px 30px #dfe4ea'}, colors={'background':'#dfe4ea'}, id="tabs", children=[   #création des différents "onglets"
             dcc.Tab(label="Présentation", children=[   #premier onglet
                 html.Div(children=[
@@ -264,11 +264,11 @@ def main():
                     dcc.Textarea(
                         id='présentation',#id 
                         title='Présentation du dashboard',#titre en haut de la page
-                        value='Bienvenue!\n\nNous sommes Sarah Behanzin, Amine Belgacem et Shayan Arnal.\nOn étudie ici les statistiques des différentes coupes de monde de football de 1930 à 2018.\nLes bases de données scrappées comportent des informations en plus que celles dues au scrapping, notamment avec des merges sur différentes dataframes.',
+                        value='Bienvenue!\n\nNous sommes Sarah Behanzin, Amine Belgacem et Shayan Arnal, étudiants en 2e année du cycle ingénieur à ESIEE Paris (filière DataScience et Intelligence Artificielle).\nNous étudions ici les statistiques des différentes coupes de monde de football de 1930 à 2018.\nLes bases de données scrappées (récupérées à partir de différents sites internet) comportent des informations en plus que celles dues au scrapping.\nSi vous souhaitez obtenir des informations complémentaires sur notre projet, il ne faut pas hésiter à nous contacter par mail:\n•sarah.behanzin@edu.esiee.fr\n•mohammad-amine.belgacem@edu.esiee.fr\n•shayan.arnal@edu.esiee.fr.',
                         style={'fontFamily':'Arial','width':'100%', 'height':'1000', 'textAlign':'left', 'background-color':'#dfe4ea', 'font-size':'medium', 'font-style':'normal', 'resize':'none', 'border':'none'},
                         readOnly='readOnly',#en lecture seule
                         draggable='false',
-                        rows='5'#5 lignes
+                        rows='9'#9 lignes
                     ),
 
                     html.H1(children='Base de donnée importée : Liste des pays', style={'textAlign':'left'}),#première dataframe
@@ -341,14 +341,14 @@ def main():
                     )
                 ])
             ]),
-
+            #Partie graphiques
             dcc.Tab(label="Analyse par les graphiques", children=[   #deuxième onglet
                 html.Div(children=[
                     html.H1(children='Différents graphiques', style={'textAlign' :'center', 'background-color':'#dfe4ea'}),#titre de la page
                         dcc.Textarea(
                         id='graph',
                         title='Graphiques',
-                        value='Voici les graphiques barres représentant le nombre de fois où chaque pays a été dans les 4 premiers du classement.\nSi vous voulez voir à quels pays les codes correspondent, vous pouvez les rechercher dans la  première base de données présente dans le précédent onglet ',
+                        value='Voici les graphiques permettant une analyse des données. Vous pouvez vous référer aux bases de données du précédent onglet pour les correspondances noms/codes des pays en entrant le pays recherché dans la barre de recherche de la colonne voulue du tableau qui vous intéresse',
                         style={'fontFamily':'Arial','width':'100%', 'height':'1000', 'textAlign':'left', 'background-color':'#dfe4ea', 'font-size':'medium', 'font-style':'normal', 'resize':'none','border':'none'},
                         readOnly='readOnly',
                         draggable='false',
@@ -382,12 +382,12 @@ def main():
                         ),
                 ]),
             ]),
-
-            dcc.Tab(label="Cartes des pays participants", children=[   #quatrième onglet
+            #Partie cartes
+            dcc.Tab(label="Cartes des pays participants arrivés dans les 4 premiers du classement", children=[   #quatrième onglet
 
                 html.Div(children=[
                     html.H1(children='Cartes', style={'textAlign' :'center', 'background-color':'#dfe4ea'}),#titre de la page
-                    html.H1(children='Cartes des pays ayant particpéa(arrivés dans les 4 premiers) aux coupes du mondes féminines', style={'textAlign':'left'}),#titre de la première carte
+                    html.H1(children='Cartes des pays ayant particpé aux Coupes du Monde féminines', style={'textAlign':'left'}),#titre de la première carte
                       html.Iframe(#affichage de la première map
                         id='map1',
                         srcDoc=open('map_fem.html','r').read(),
@@ -395,7 +395,7 @@ def main():
                         height='600',
                         style={'boxShadow':'2px 2px 30px #a4b0be', 'borderRadius':'10px', 'margin':'25'}
                     ),
-                    html.H1(children='Cartes des pays ayant particpé(arrivés dans les 4 premiers) aux coupes du mondes masculines', style={'textAlign':'left'}),#titre de la deuxième carte
+                    html.H1(children='Cartes des pays ayant particpé aux Coupes du Monde masculines', style={'textAlign':'left'}),#titre de la deuxième carte
                     html.Iframe(#affichage de la première map
                         id='map2',
                         srcDoc=open('map_masc.html','r').read(),
