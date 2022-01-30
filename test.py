@@ -6,6 +6,7 @@ authors:
     shayan.arnal@edu.esiee.fr
 '''
 #Importations utiles pour le traitement des données
+from this import d
 import urllib.request
 import pandas as pd
 import numpy as np
@@ -171,6 +172,13 @@ def main():
     fonction_correspondance(df_but_masc['CDM'])
     fonction_correspondance(df_but_fem['CDM'])
 
+    #Modification des années du tournoi féminin (certaines n'étaient pas au bon format)
+    for i in range(len(df_CM_feminin["Année"])): #on modifie le format des années qui ne sont pas écrites en entier
+        if df_CM_feminin["Année"][i]<50: #si le nombre est inférieur à 50, on lui ajoute 2000
+            df_CM_feminin["Année"][i]=2000+df_CM_feminin["Année"][i]
+        if df_CM_feminin["Année"][i]>50 and df_CM_feminin['Année'][i]<100: #si le nombre est supérieur à 50 et inférieur à 100, on ajoute 1900
+            df_CM_feminin['Année'][i]=1900+df_CM_feminin['Année'][i]
+
     #Mettre le nom des pays au bon format
     #On merge les deux dataframes respectivement avec celle des pays
     #puis on supprimme toutes les lignes pour lesquelles nous n'avons pas de date car ce sont des lignes où les pays n'ont pas participé à la CDM
@@ -178,15 +186,6 @@ def main():
     df_CM_masculin=pd.merge(df_CM_masculin,df_pays,on='nom_français',how='outer').dropna(subset=['Année','alpha3'])
     df_CM_feminin=pd.merge(df_CM_feminin,df_pays,on='nom_français',how='outer').dropna(subset=['Année', 'alpha3'])
     df_coord_fem=pd.merge(df_coord,df_CM_masculin,on='alpha2',how='outer').dropna(subset=['Année', 'alpha3'])
-
-  
-
-    #Modification des années du tournoi féminin (certaines n'étaient pas au bon format)
-    for i in range(len(df_CM_feminin["Année"])): #on modifie le format des années qui ne sont pas écrites en entier
-        if df_CM_feminin["Année"][i]<50: #si le nombre est inférieur à 50, on lui ajoute 2000
-            df_CM_feminin["Année"][i]=2000+df_CM_feminin["Année"][i]
-        if df_CM_feminin["Année"][i]>50 and df_CM_feminin['Année'][i]<100: #si le nombre est supérieur à 50 et inférieur à 100, on ajoute 1900
-            df_CM_feminin['Année'][i]=1900+df_CM_feminin['Année'][i]
 
     #Mongo
     
@@ -215,6 +214,7 @@ def main():
     But_masc_x,But_masc_y=cursor_to_liste(collection_but_masc.aggregate([{"$group":{"_id":"$equipe", "moyene_buts":{"$avg":"$Goals"}}}]))
     But_fem_x,But_fem_y=cursor_to_liste(collection_but_fem.aggregate([{"$group":{"_id":"$equipe", "moyene_buts":{"$avg":"$Goals"}}}]))
     
+    
     #graph pie
 
     graph_pie=make_subplots(rows=1, cols=2, specs=[[{'type':'domain'}, {'type':'domain'}]])
@@ -225,7 +225,6 @@ def main():
     title_text="Moyenne de buts faits par les pays arrivés dans les 4 premiers de 1930 à 2018",
     annotations=[dict(text='CDM_masc', x=0.18, y=0.5, font_size=20, showarrow=False), dict(text='CDM_fem', x=0.82, y=0.5, font_size=20, showarrow=False)])
 
-    graph_pie.show()
     # graph_pie_masc=px.pie(values=But_masc_y,names=But_masc_x,color_discrete_sequence=px.colors.sequential.RdBu, title='Pourcentage des pays ayant été dans les 4 premiers de 1930 à 2018')
     # graph_pie_masc.show()
    
