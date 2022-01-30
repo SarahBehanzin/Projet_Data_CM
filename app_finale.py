@@ -4,41 +4,28 @@ authors:
     mohammad-amine.belgacem@edu.esiee.fr
     shayan.arnal@edu.esiee.fr
 '''
-#Importations utiles pour le traitement des données
-import urllib.request
+#Importations utiles pour le traitement et l'exploitation des données
 import pandas as pd
 import numpy as np
-import folium
+import pymongo
+
+#Importations utiles pour les graph
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import plotly_express as px
+
+#Importations utiles pour les cartes
+import folium
 
 #Importations utiles pour le dashboard
-import plotly_express as px
-import dash
-import base64
 
+import dash
 from dash import dcc
 from dash import html
 from dash import dash_table
-import imageio  
 
-from cgi import test
-from cgitb import text
-from cmath import nan
-from os import name
-import string
-from numpy import NaN
-import pandas as pd
-import requests
-import string
-import pymongo
-import matplotlib.pyplot as plt
-from googletrans import Translator
-from bs4 import BeautifulSoup
 pd.options.mode.chained_assignment = None  # default='warn' //permet de supprimmer un avertissement
-
-translator=Translator() #fonction transmlator
 
 #Base de données contenant la liste des pays conforme à la norme ISO 3166-1
 
@@ -271,7 +258,6 @@ def main():
         html.H1(children='Dashboard sur les coupes du mondes de football (féminines et masculines)', style={'textAlign': 'center'}),#titre général du dashboard
 
         dcc.Tabs(style={'borderTop':'3px solid #212121', 'borderRadius':'6px', 'boxShadow':'2px 2px 30px #dfe4ea'}, colors={'background':'#dfe4ea'}, id="tabs", children=[   #création des différents "onglets"
-
             dcc.Tab(label="Présentation", children=[   #premier onglet
                 html.Div(children=[
                     html.H1(children='Présentation du projet', style={'textAlign' :'center','background-color':'#dfe4ea'}),#titre de la page

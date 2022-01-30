@@ -11,10 +11,8 @@ from cmath import nan
 from os import name
 import string
 from numpy import NaN
-import pandas as pd
 import requests
 import string
-#import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 
 def main():
