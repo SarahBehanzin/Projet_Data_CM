@@ -48,12 +48,12 @@ Pour installer les packages vous pouvez utiliser la commande "pip install"
 
 3) Il faut également installer mongo en suivant le tutorial disponible à l'adresse suivante: https://docs.mongodb.com/manual/installation/
 
-4) Maintenant que votre machine possède tous les packages nécessaire au lancement de notre projet sur la coupe du monde vous pouvez récupérer ce dernier sur notre git à l'adresse suivante: 
+4) Maintenant que votre machine possède tous les packages nécessaire au lancement de notre projet sur la coupe du monde vous pouvez récupérer ce dernier sur notre git à l'adresse suivante: https://github.com/SarahBehanzin/Projet_Data_CM
 
 Vous devez d'abord réaliser un "fork" du projet puis un "clone" pour l'avoir sur votre machine.
 
-5) Il suffit de lancer la commande "python main.py" ou "python3 main.py" en fonction de si vous utiliser windows ou macOS.
-A l'issue de cette commande, une adresse https apparait dans le terminal. Réaliser un cmd + clic dessus et le projet va apparaître dans une page de votre navigateur.
+5) Il suffit de lancer la commande "python app_finale.py" ou "python3 app_finale.py" en fonction de si vous utiliser windows ou macOS.
+A l'issue de cette commande, une adresse https apparait dans le terminal. Réaliser un cmd + clic / ctr + clic dessus et le projet va apparaître dans une page de votre navigateur.
 
 6) Si vous voulez modifier le projet et sauvegarder ces modifications, vous pouvez utiliser les commandes suivantes:
 
